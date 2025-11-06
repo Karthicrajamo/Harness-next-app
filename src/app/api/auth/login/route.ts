@@ -1,23 +1,70 @@
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 
-export async function POST(request: Request) {
-  const { username, password } = await request.json();
-  console.log(username, password);
-  if (username === "admin" && password === "password") {
-    const token = jwt.sign({ username }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+/**
+ * This route proxies login requests to your backend (e.g. http://192.168.0.207:8085/api/v2/login)
+ * and stores the JWT token in a secure HttpOnly cookie.
+ */
+export async function POST(req: Request) {
+  try {
+    // Parse request body from frontend
+    const body = await req.json();
+
+    // Forward to your actual backend login API
+
+    const backendResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/v2/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    // Parse backend response
+    const data = await backendResponse.json();
+    const authToken = backendResponse.headers.get("Authorization");
+
+    console.log("Auth Token:", authToken);
+    // if (authToken) await saveCred('jwt', 'jwt', authToken);
+    // If login failed at backend
+    if (!backendResponse.ok || !authToken) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid credentials or missing token",
+          details: data,
+        },
+        { status: backendResponse.status || 401 }
+      );
+    }
+
+    // ✅ Create response and set JWT in secure cookie
+    const res = NextResponse.json({
+      success: true,
+      message: "Login successful",
+      user: data.user || null,
     });
-    const response = NextResponse.json({ message: "Login successful", token });
 
-    response.cookies.set("token", token, {
-      httpOnly: true,
-      maxAge: 60 * 60,
+    res.cookies.set("token", authToken, {
+      httpOnly: true, // cannot be accessed via JS
+      secure: process.env.NODE_ENV === "production", // only over HTTPS in prod
+      sameSite: "lax",
       path: "/",
+      maxAge: 60 * 60 * 24, // 1 day
     });
 
-    return response;
+    return res;
+  } catch (error: any) {
+    console.error("Login API error:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
 }
