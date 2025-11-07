@@ -1,7 +1,11 @@
 "use client";
 import "./globals.css";
 import { Provider } from "react-redux";
-import { store } from "@/redux/store";
+import store from "../redux/mainStore";
+import 'primereact/resources/themes/saga-blue/theme.css';   
+import 'primereact/resources/primereact.min.css';          
+import 'primeicons/primeicons.css';
+// import { store } from "@/redux/store";
 
 export default function RootLayout({
   children,
