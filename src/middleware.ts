@@ -6,10 +6,13 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
 
   const protectedPaths = ["/dashboard"];
+  console.log("protectedPaths>>", request.nextUrl.pathname);
 
   if (
     protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
   ) {
+    console.log("token>>", token);
+
     if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
