@@ -1,13 +1,21 @@
-import axios from "axios";
-import Cookies from "js-cookie";
+import axios, { InternalAxiosRequestConfig } from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 });
 
-api.interceptors.request.use((config) => {
-  const token = Cookies.get("token");
-  if (token) config.headers.Authorization = `${token}`;
+// ✅ Correct typing for Axios v1+
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const token = typeof window !== "undefined"
+    ? localStorage.getItem("token")
+    : null;
+
+  if (token) {
+    // Ensure headers exist
+    config.headers = config.headers || {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
 

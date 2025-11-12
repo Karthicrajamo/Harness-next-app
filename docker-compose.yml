@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  nextjs_dev:
+    container_name: nextjs_dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - GIT_REPO=https://github.com/Karthicrajamo/Harness-next-app.git
+      - GIT_BRANCH=main
+    command: npm run dev

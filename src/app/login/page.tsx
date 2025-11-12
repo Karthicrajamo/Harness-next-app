@@ -65,7 +65,7 @@ export default function LoginPage() {
         type="submit"
         className="bg-blue-600 text-white p-2 rounded w-full"
       >
-        Login
+        Loginvsdg324353
       </button>
     </form>
   );
