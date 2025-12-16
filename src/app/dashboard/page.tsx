@@ -7,8 +7,6 @@ import { useState } from "react";
 export default function DashboardPage() {
   const router = useRouter();
 
-  const [logoutPop, setLogoutPop] = useState(false);
-
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     // router.push("/login");
