@@ -1,4 +1,3 @@
-import { Image } from 'react-native';
 export const APIROUTES = {
   LOGIN: {
     POST_LOGIN: "/api/auth/login",
