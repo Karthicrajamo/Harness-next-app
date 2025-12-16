@@ -8,7 +8,6 @@ import OperationTable from "../../components/operations/OperationTable";
 import OperationModal from "../../components/operations/OperationModal";
 import { OperationItem } from "../../data/operation"; 
 import { dummyOperations } from "../../data/dummyOperations";
-import Image from "next/image";
 
 const OperationListPage: React.FC = () => {
   const [operationData, setOperationData] = useState<OperationItem[]>(dummyOperations);

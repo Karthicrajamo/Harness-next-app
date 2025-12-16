@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import "primeicons/primeicons.css";
 import Image from "next/image";
-import { useState } from "react";
 
 export default function DashboardPage() {
   const router = useRouter();
