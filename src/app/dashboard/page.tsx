@@ -13,7 +13,6 @@ export default function DashboardPage() {
     await fetch("/api/auth/logout", { method: "POST" });
     // router.push("/login");
     router.push("/");
-
   };
 
   return (
@@ -23,12 +22,12 @@ export default function DashboardPage() {
         {/* Left Side: Brand & Breadcrumb */}
         <div className="flex items-center">
           <Image
-                src="https://res.cloudinary.com/dcgpglrqt/image/upload/v1765774217/Group_454_ynotl6.png" // Still uses the root-relative path
-                alt="Harness ERP Logo"
-                width={38} // Approximate width in pixels for md:h-8 (32px)
-                height={38} // Approximate height in pixels for md:h-8 (32px)
-                className="h-6 md:h-8 w-auto mr-3" // Tailwind classes for visual size
-              />
+            src="https://res.cloudinary.com/dcgpglrqt/image/upload/v1765774217/Group_454_ynotl6.png" // Still uses the root-relative path
+            alt="Harness ERP Logo"
+            width={38} // Approximate width in pixels for md:h-8 (32px)
+            height={38} // Approximate height in pixels for md:h-8 (32px)
+            className="h-6 md:h-8 w-auto mr-3" // Tailwind classes for visual size
+          />
           <h1 className="flex items-center font-semibold text-lg text-[#3b82f6]">
             Harness ERP
           </h1>
@@ -79,7 +78,7 @@ export default function DashboardPage() {
             <h1 className="bg-orange-400 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-white text-sm md:text-base **lg:text-sm** cursor-pointer">
               KA
             </h1>
-            
+
             {/* Logout Dropdown */}
             <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg hidden **group-hover:block** z-20">
               <button
@@ -145,25 +144,21 @@ export default function DashboardPage() {
               <div className="border border-gray-300 rounded-md p-3 flex items-start">
                 <div className="flex items-center">
                   <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Cut Panel Bundle Audit
-                      </h6>
+                  <h6 className="group-hover:text-white">
+                    Cut Panel Bundle Audit
+                  </h6>
                 </div>
               </div>
               <div className="border border-gray-300 rounded-md p-3 flex items-start">
                 <div className="flex items-center">
                   <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Bundle Audit
-                      </h6>
+                  <h6 className="group-hover:text-white">Bundle Audit</h6>
                 </div>
               </div>
               <div className="border border-gray-300 rounded-md p-3 flex items-start">
                 <div className="flex items-center">
                   <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Operation Master
-                      </h6>
+                  <h6 className="group-hover:text-white">Operation Master</h6>
                 </div>
               </div>
             </div>
@@ -212,9 +207,7 @@ export default function DashboardPage() {
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Bundle Audit
-                      </h6>
+                      <h6 className="group-hover:text-white">Bundle Audit</h6>
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
@@ -345,10 +338,7 @@ export default function DashboardPage() {
                       </h6>
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span
-                        className="pi pi-building
- mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"
-                      ></span>
+                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Print Settings</h6>
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
