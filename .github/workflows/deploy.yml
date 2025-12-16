@@ -2,8 +2,9 @@ name: CI/CD to Vercel
 
 on:
   push:
-    branches: ["main"]
+    branches: ["vercel"]
   pull_request:
+    branches: ["vercel"]
 
 jobs:
   build-test:
@@ -28,7 +29,7 @@ jobs:
   deploy:
     needs: build-test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/vercel'
 
     steps:
       - name: Checkout code
