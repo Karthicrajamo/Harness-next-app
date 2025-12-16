@@ -1,7 +1,7 @@
 // ./data/operation.ts
 
 export interface OperationItem {
-  id: number | string;
+  id: string;
   operationCode: string;
   operation: string;
   hindi: string;

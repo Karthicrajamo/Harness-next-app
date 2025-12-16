@@ -66,7 +66,7 @@ const OperationListPage: React.FC = () => {
       
       <div className="p-4">
         <OperationTable
-          // initialData={operationData} // Passing the master data list
+          initialData={operationData} // Passing the master data list
           onEditClick={openEditModal}
           onViewClick={openViewModal}    // NEW: Handle view icon
           onDeleteClick={handleDelete}  // NEW: Handle single & multi delete
