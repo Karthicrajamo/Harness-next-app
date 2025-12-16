@@ -10,9 +10,9 @@ export function middleware(request: NextRequest) {
   if (
     protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
   ) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+    // if (!token) {
+    //   return NextResponse.redirect(new URL("/login", request.url));
+    // }
 
     try {
       //   jwt.verify(token, process.env.JWT_SECRET!);
