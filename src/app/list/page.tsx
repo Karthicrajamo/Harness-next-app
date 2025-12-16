@@ -55,7 +55,7 @@ const OperationListPage: React.FC = () => {
       : "Are you sure you want to delete this item?";
       
     if (window.confirm(confirmMessage)) {
-      setOperationData((prev) => prev.filter((item) => !ids.includes(item.id)));
+      setOperationData((prev) => prev.filter((item:any) => !ids.includes(item.id)));
     }
   };
 
@@ -66,7 +66,7 @@ const OperationListPage: React.FC = () => {
       
       <div className="p-4">
         <OperationTable
-          initialData={operationData} // Passing the master data list
+          // initialData={operationData} // Passing the master data list
           onEditClick={openEditModal}
           onViewClick={openViewModal}    // NEW: Handle view icon
           onDeleteClick={handleDelete}  // NEW: Handle single & multi delete

@@ -55,7 +55,11 @@ const OperationListPage: React.FC = () => {
             <main className="p-4 md:p-6">
                 {/* 2. RENDER THE TABLE */}
                 {/* We assume OperationTable handles its own data/filtering/sorting now */}
-                <OperationTable onEditClick={(item) => console.log("Edit:", item)} /> 
+                <OperationTable onEditClick={(item) => console.log("Edit:", item)} onViewClick={function (item: OperationItem): void {
+                    throw new Error('Function not implemented.');
+                } } onDeleteClick={function (ids: string[]): void {
+                    throw new Error('Function not implemented.');
+                } } /> 
             </main>
 
             {/* 3. RENDER THE MODAL IF STATE IS TRUE */}
