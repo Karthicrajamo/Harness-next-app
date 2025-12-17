@@ -19,7 +19,9 @@ interface AnimatedCreateButtonProps {
    Sub Components (OUTSIDE render)
 ----------------------------------- */
 
-const AnimatedCreateButton: React.FC<AnimatedCreateButtonProps> = ({ onClick }) => {
+const AnimatedCreateButton: React.FC<AnimatedCreateButtonProps> = ({
+  onClick,
+}) => {
   return (
     <button
       onClick={onClick}
@@ -62,9 +64,7 @@ const Header: React.FC<HeaderProps> = ({
             priority
           />
 
-          <h1 className="font-semibold text-lg text-[#3b82f6]">
-            Harness ERP
-          </h1>
+          <h1 className="font-semibold text-lg text-[#3b82f6]">Harness ERP</h1>
 
           <span className="hidden sm:inline pi pi-chevron-right mx-2 text-gray-400 text-xs" />
           <span className="hidden sm:inline text-gray-600 text-sm">Admin</span>
@@ -88,7 +88,17 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Notifications */}
           <span className="pi pi-bell text-gray-500 text-base cursor-pointer" />
-
+          <h3 className="hidden md:flex items-center text-gray-600 border-l pl-2 border-gray-200 text-sm">
+            Help
+            <span
+              className="pi pi-chevron-down"
+              style={{
+                fontSize: "0.8rem",
+                marginLeft: "4px",
+                color: "lightgray",
+              }}
+            ></span>
+          </h3>
           {/* Company Name */}
           <span className="hidden sm:block text-sm font-bold text-black">
             JJ Mills Bangladesh Pvt
@@ -101,9 +111,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
 
             <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block z-30">
-              <button
-                className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center"
-              >
+              <button className="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center">
                 <span className="pi pi-sign-out mr-2" />
                 Logout
               </button>
@@ -117,9 +125,7 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold text-gray-900">{title}</h2>
 
-          {showCreateButton && (
-            <AnimatedCreateButton onClick={onCreateClick} />
-          )}
+          {showCreateButton && <AnimatedCreateButton onClick={onCreateClick} />}
         </div>
       </header>
     </>
