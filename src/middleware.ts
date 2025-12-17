@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+  const _token = request.cookies.get("token")?.value;
 
   const protectedPaths = ["/dashboard"];
 

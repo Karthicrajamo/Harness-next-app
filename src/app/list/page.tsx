@@ -1,23 +1,27 @@
 // ./next-app/src/app/list/page.tsx
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState } from "react";
 import DashboardLayout from "../../components/ListLayout";
 import Header from "../../components/Header";
 import OperationTable from "../../components/operations/OperationTable";
 import OperationModal from "../../components/operations/OperationModal";
-import { OperationItem } from "../../data/operation"; 
+import { OperationItem } from "../../data/operation";
 import { dummyOperations } from "../../data/dummyOperations";
 
 const OperationListPage: React.FC = () => {
-  const [operationData, setOperationData] = useState<OperationItem[]>(dummyOperations);
+  const [operationData, setOperationData] =
+    useState<OperationItem[]>(dummyOperations);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingItem, setEditingItem] = useState<OperationItem | null>(null);
   const [isViewOnly, setIsViewOnly] = useState<boolean>(false); // New state for View mode
 
   // --- Handlers for Actions ---
 
-  const handleAddOrUpdateOperation = (item: OperationItem, isEditing: boolean) => {
+  const handleAddOrUpdateOperation = (
+    item: OperationItem,
+    isEditing: boolean
+  ) => {
     if (isEditing) {
       setOperationData((prev) =>
         prev.map((op) => (op.id === item.id ? item : op))
@@ -49,26 +53,28 @@ const OperationListPage: React.FC = () => {
   };
 
   const handleDelete = (ids: string[]) => {
-    const confirmMessage = ids.length > 1 
-      ? `Are you sure you want to delete ${ids.length} items?` 
-      : "Are you sure you want to delete this item?";
-      
+    const confirmMessage =
+      ids.length > 1
+        ? `Are you sure you want to delete ${ids.length} items?`
+        : "Are you sure you want to delete this item?";
+
     if (window.confirm(confirmMessage)) {
-      setOperationData((prev) => prev.filter((item:any) => !ids.includes(item.id)));
+      setOperationData((prev) =>
+        prev.filter((item: OperationItem) => !ids.includes(item.id))
+      );
     }
   };
 
   return (
     <DashboardLayout>
-       
       <Header title="Operation Master" onCreateClick={openAddModal} />
-      
+
       <div className="p-4">
         <OperationTable
           initialData={operationData} // Passing the master data list
           onEditClick={openEditModal}
-          onViewClick={openViewModal}    // NEW: Handle view icon
-          onDeleteClick={handleDelete}  // NEW: Handle single & multi delete
+          onViewClick={openViewModal} // NEW: Handle view icon
+          onDeleteClick={handleDelete} // NEW: Handle single & multi delete
         />
       </div>
 

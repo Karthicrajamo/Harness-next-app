@@ -1,14 +1,18 @@
 // ./next-app/src/components/employees/EmployeeModal.tsx
 import React, { useState } from "react";
 
-// Define the shape of the data the form will submit
-// We omit 'id', 'status', 'agreement' as they are generated/defaulted on submission
-// type NewEmployeeData = Omit<Ticket, 'id' | 'status' | 'agreement'>;
+interface EmployeeFormData {
+  subject: string;
+  priority: string;
+  type: string;
+  team: string;
+  contact: string;
+}
 
 interface EmployeeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: any;
+  onSubmit: (data: EmployeeFormData) => void;
 }
 
 const EmployeeModal: React.FC<EmployeeModalProps> = ({
@@ -16,10 +20,8 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
   onClose,
   onSubmit,
 }) => {
-  if (!isOpen) return null;
-
   // State to manage the form inputs
-  const [formData, setFormData] = useState<any>({
+  const [formData, setFormData] = useState<EmployeeFormData>({
     subject: "", // Employee Name
     priority: "Medium",
     type: "New Join",
@@ -27,11 +29,13 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
     contact: "", // Email
   });
 
+  if (!isOpen) return null;
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev: any) => ({ ...prev, [name]: value }));
+    setFormData((prev: EmployeeFormData) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {

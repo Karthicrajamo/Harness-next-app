@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { serverApi } from "@/lib/serverApi";
 
-export async function GET(req:Request) {
+export async function GET(_req: Request) {
   try {
     const api = serverApi();
     const response = await api.get("/api/dashboard/getNotes?user_id=");

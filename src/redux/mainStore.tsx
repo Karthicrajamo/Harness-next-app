@@ -6,9 +6,17 @@ const combinedReducer = combineReducers(reducers);
 
 export type RootState = ReturnType<typeof combinedReducer>;
 
-export const rootReducer = (state: RootState | undefined, action: any): RootState => {
+interface StoreAction {
+  type: string;
+  [key: string]: unknown;
+}
+
+export const rootReducer = (
+  state: RootState | undefined,
+  action: StoreAction
+): RootState => {
   if (action.type === RESET_STORE_ACTION_TYPE) {
-    state = undefined; 
+    state = undefined;
   }
   return combinedReducer(state, action);
 };

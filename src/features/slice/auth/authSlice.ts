@@ -1,9 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LoginMiddleWare } from "@/features/Thunks/auth/authThunks";
 
+interface User {
+  id?: string;
+  name?: string;
+  email?: string;
+  [key: string]: unknown;
+}
+
 interface AuthState {
   token: string | null;
-  user: any | null;
+  user: User | null;
   loading: boolean;
   error: string | null;
 }
