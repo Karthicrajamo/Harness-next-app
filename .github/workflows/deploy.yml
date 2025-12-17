@@ -34,10 +34,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Debug workspace
+        run: |
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo "PWD: $(pwd)"
+          echo "Repo root contents:"
+          ls -la || true
+          echo "next-app contents (if present):"
+          ls -la ./next-app || true
 
       - name: Deploy to Vercel
-        run: npx vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}"
+        run: |
+          # If the next-app folder exists, cd into it; otherwise run from repo root
+          if [ -d "./next-app" ]; then
+            echo "Found ./next-app; changing directory and deploying from there"
+            cd ./next-app
+          else
+            echo "./next-app not found; deploying from repository root"
+          fi
+          npx vercel deploy --prod --token="${{ secrets.VERCEL_TOKEN }}"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: ./next-app
