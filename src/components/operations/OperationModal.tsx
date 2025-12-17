@@ -51,6 +51,14 @@ const OperationModal: React.FC<OperationModalProps> = ({
   // 2. CHANGE: Initialize internal isEditing state based on props
   useEffect(() => {
     if (isOpen) {
+      /*
+       * We're intentionally synchronously initializing local state from props
+       * when the modal opens (or when `editingItem` changes). This is a
+       * controlled action that prepares the form for editing/viewing. The
+       * eslint rule `react-hooks/set-state-in-effect` is noisy in this
+       * specific case, so we disable it for this effect only.
+       */
+      /* eslint-disable react-hooks/set-state-in-effect */
       setIsEditing(!!editingItem && !isReadOnly);
       if (editingItem) {
         setFormData({
@@ -66,13 +74,16 @@ const OperationModal: React.FC<OperationModalProps> = ({
       } else {
         setFormData(initialState);
       }
+      /* eslint-enable react-hooks/set-state-in-effect */
     }
   }, [editingItem, isOpen, isReadOnly, initialState]);
 
   if (!isOpen) return null;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -85,9 +96,14 @@ const OperationModal: React.FC<OperationModalProps> = ({
     e.preventDefault();
     const submissionData: OperationItem = {
       id: editingItem ? editingItem.id : Date.now().toString(),
-      operationCode: editingItem ? editingItem.operationCode : `OP-${Date.now()}`,
+      operationCode: editingItem
+        ? editingItem.operationCode
+        : `OP-${Date.now()}`,
       operation: formData.operation,
-      smv: typeof formData.smv === "string" ? parseFloat(formData.smv) : (formData.smv as number),
+      smv:
+        typeof formData.smv === "string"
+          ? parseFloat(formData.smv)
+          : (formData.smv as number),
       machineCode: formData.machineCode,
       masterOperation: formData.masterOperation,
       skillGrade: formData.skillGrade,
@@ -116,17 +132,24 @@ const OperationModal: React.FC<OperationModalProps> = ({
               : isEditing || editingItem
               ? "Edit Operation Details"
               : "Add New Operation"}
-            
+
             {/* 3. CHANGE: Functional Toggle Icon */}
             {isReadOnly && (
-              <span 
-                onClick={() => setIsEditing(!isEditing)} 
-                className={`pi ${isEditing ? 'pi-times text-red-500' : 'pi-file-edit text-blue-500'} ml-3 text-sm cursor-pointer hover:scale-110 transition-transform`}
+              <span
+                onClick={() => setIsEditing(!isEditing)}
+                className={`pi ${
+                  isEditing
+                    ? "pi-times text-red-500"
+                    : "pi-file-edit text-blue-500"
+                } ml-3 text-sm cursor-pointer hover:scale-110 transition-transform`}
                 title={isEditing ? "Cancel Edit" : "Enable Editing"}
               ></span>
             )}
           </h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
             <FiX className="w-6 h-6" />
           </button>
         </div>
@@ -135,7 +158,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-700">Operation</label>
+              <label className="block text-xs font-medium text-gray-700">
+                Operation
+              </label>
               <input
                 type="text"
                 name="operation"
@@ -148,7 +173,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-700">SMV</label>
+              <label className="block text-xs font-medium text-gray-700">
+                SMV
+              </label>
               <input
                 type="number"
                 step="0.01"
@@ -163,7 +190,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-700">Machine Code</label>
+              <label className="block text-xs font-medium text-gray-700">
+                Machine Code
+              </label>
               <input
                 type="text"
                 name="machineCode"
@@ -174,7 +203,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700">Master Operation</label>
+              <label className="block text-xs font-medium text-gray-700">
+                Master Operation
+              </label>
               <input
                 type="text"
                 name="masterOperation"
@@ -185,7 +216,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700">Skill Grade</label>
+              <label className="block text-xs font-medium text-gray-700">
+                Skill Grade
+              </label>
               <input
                 type="text"
                 name="skillGrade"
@@ -199,7 +232,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-700">Hindi Translation</label>
+              <label className="block text-xs font-medium text-gray-700">
+                Hindi Translation
+              </label>
               <input
                 type="text"
                 name="hindi"
@@ -210,7 +245,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700">Tamil Translation</label>
+              <label className="block text-xs font-medium text-gray-700">
+                Tamil Translation
+              </label>
               <input
                 type="text"
                 name="tamil"
@@ -223,7 +260,9 @@ const OperationModal: React.FC<OperationModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-700">Comments</label>
+            <label className="block text-xs font-medium text-gray-700">
+              Comments
+            </label>
             <textarea
               name="comments"
               value={formData.comments}
@@ -243,7 +282,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
             >
               Cancel
             </button>
-            
+
             {/* 4. CHANGE: Show Submit button if adding NEW or if EDITING is enabled */}
             {(!isReadOnly || isEditing) && (
               <button
