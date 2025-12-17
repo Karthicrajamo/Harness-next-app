@@ -29,7 +29,8 @@ const OperationModal: React.FC<OperationModalProps> = ({
   editingItem,
   isReadOnly,
 }) => {
-  const isEditing = !!editingItem;
+  // 1. CHANGE: Manage isEditing with useState so the UI re-renders
+  const [isEditing, setIsEditing] = useState(false);
 
   const initialState: ModalData = useMemo(
     () => ({
@@ -45,10 +46,14 @@ const OperationModal: React.FC<OperationModalProps> = ({
     []
   );
 
-  // Derive form data from editingItem or use initialState
-  const [formData, setFormData] = useState<ModalData>(() =>
-    editingItem
-      ? {
+  const [formData, setFormData] = useState<ModalData>(initialState);
+
+  // 2. CHANGE: Initialize internal isEditing state based on props
+  useEffect(() => {
+    if (isOpen) {
+      setIsEditing(!!editingItem && !isReadOnly);
+      if (editingItem) {
+        setFormData({
           operation: editingItem.operation,
           smv: editingItem.smv,
           machineCode: editingItem.machineCode,
@@ -57,61 +62,32 @@ const OperationModal: React.FC<OperationModalProps> = ({
           hindi: editingItem.hindi,
           tamil: editingItem.tamil,
           comments: editingItem.comments,
-        }
-      : initialState
-  );
-
-  // Update formData when editingItem changes (without triggering cascade)
-  useEffect(() => {
-    if (editingItem) {
-      setFormData({
-        operation: editingItem.operation,
-        smv: editingItem.smv,
-        machineCode: editingItem.machineCode,
-        masterOperation: editingItem.masterOperation,
-        skillGrade: editingItem.skillGrade,
-        hindi: editingItem.hindi,
-        tamil: editingItem.tamil,
-        comments: editingItem.comments,
-      });
-    } else {
-      setFormData(initialState);
+        });
+      } else {
+        setFormData(initialState);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editingItem]);
+  }, [editingItem, isOpen, isReadOnly, initialState]);
 
   if (!isOpen) return null;
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      // Convert SMV back to number if it's the SMV field
       [name]: name === "smv" ? parseFloat(value) || 0 : value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Construct the full object to submit
     const submissionData: OperationItem = {
-      // Keep existing ID/Code if editing, generate new if adding
       id: editingItem ? editingItem.id : Date.now().toString(),
-      operationCode: editingItem
-        ? editingItem.operationCode
-        : `OP-${Date.now()}`,
-
-      // Map form data to the OperationItem interface
+      operationCode: editingItem ? editingItem.operationCode : `OP-${Date.now()}`,
       operation: formData.operation,
-      smv:
-        typeof formData.smv === "string"
-          ? parseFloat(formData.smv)
-          : (formData.smv as number),
+      smv: typeof formData.smv === "string" ? parseFloat(formData.smv) : (formData.smv as number),
       machineCode: formData.machineCode,
       masterOperation: formData.masterOperation,
       skillGrade: formData.skillGrade,
@@ -120,30 +96,37 @@ const OperationModal: React.FC<OperationModalProps> = ({
       comments: formData.comments,
     };
 
-    onSubmit(submissionData, isEditing);
+    onSubmit(submissionData, !!editingItem);
   };
 
-  // --- Professional Modal Styling ---
+  // Logic to determine if fields should be locked
+  const isDisabled = isReadOnly && !isEditing;
+
   return (
-    <div className="fixed inset-0 bg-transparent bg-opacity-100 overflow-y-auto h-full w-full z-50 flex justify-center p-4">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex justify-center p-4">
       <div
         className="relative bg-white shadow-2xl rounded-xl w-full max-w-2xl transform transition-all duration-300"
-        // Place the modal slightly higher (top-center appearance)
         style={{ marginTop: "5vh", maxHeight: "90vh" }}
       >
         {/* Modal Header */}
         <div className="flex justify-between items-center p-5 border-b border-gray-100 bg-gray-50 rounded-t-xl">
-          <h3 className="text-xl font-semibold text-gray-800">
-            {isReadOnly
+          <h3 className="text-xl font-semibold text-gray-800 flex items-center">
+            {isReadOnly && !isEditing
               ? "View Operation Details"
-              : isEditing
+              : isEditing || editingItem
               ? "Edit Operation Details"
               : "Add New Operation"}
+            
+            {/* 3. CHANGE: Functional Toggle Icon */}
+            {isReadOnly && (
+              <span 
+                onClick={() => setIsEditing(!isEditing)} 
+                className={`pi ${isEditing ? 'pi-times text-red-500' : 'pi-file-edit text-blue-500'} ml-3 text-sm cursor-pointer hover:scale-110 transition-transform`}
+                title={isEditing ? "Cancel Edit" : "Enable Editing"}
+              ></span>
+            )}
           </h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <FiX className="w-6 h-6" />
           </button>
         </div>
@@ -151,123 +134,107 @@ const OperationModal: React.FC<OperationModalProps> = ({
         {/* Modal Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
           <div className="grid grid-cols-2 gap-4">
-            {/* Operation */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                Operation
-              </label>
+              <label className="block text-xs font-medium text-gray-700">Operation</label>
               <input
                 type="text"
                 name="operation"
                 value={formData.operation}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50 disabled:text-gray-500"
               />
             </div>
 
-            {/* SMV */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                SMV
-              </label>
+              <label className="block text-xs font-medium text-gray-700">SMV</label>
               <input
                 type="number"
                 step="0.01"
                 name="smv"
                 value={formData.smv}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            {/* Machine Code */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                Machine Code
-              </label>
+              <label className="block text-xs font-medium text-gray-700">Machine Code</label>
               <input
                 type="text"
                 name="machineCode"
                 value={formData.machineCode}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
-            {/* Master Operation */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                Master Operation
-              </label>
+              <label className="block text-xs font-medium text-gray-700">Master Operation</label>
               <input
                 type="text"
                 name="masterOperation"
                 value={formData.masterOperation}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
-            {/* Skill Grade */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                Skill Grade
-              </label>
+              <label className="block text-xs font-medium text-gray-700">Skill Grade</label>
               <input
                 type="text"
                 name="skillGrade"
                 value={formData.skillGrade}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {/* Hindi */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                Hindi Translation
-              </label>
+              <label className="block text-xs font-medium text-gray-700">Hindi Translation</label>
               <input
                 type="text"
                 name="hindi"
                 value={formData.hindi}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
-            {/* Tamil */}
             <div>
-              <label className="block text-xs font-medium text-gray-700">
-                Tamil Translation
-              </label>
+              <label className="block text-xs font-medium text-gray-700">Tamil Translation</label>
               <input
                 type="text"
                 name="tamil"
                 value={formData.tamil}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs"
+                disabled={isDisabled}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
           </div>
 
-          {/* Comments (Textarea for professionalism) */}
           <div>
-            <label className="block text-xs font-medium text-gray-700">
-              Comments
-            </label>
+            <label className="block text-xs font-medium text-gray-700">Comments</label>
             <textarea
               name="comments"
               value={formData.comments}
               onChange={handleChange}
               rows={2}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs resize-none"
+              disabled={isDisabled}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs resize-none disabled:bg-gray-50"
             ></textarea>
           </div>
 
-          {/* Action Buttons (Footer) */}
+          {/* Action Buttons */}
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-100">
             <button
               type="button"
@@ -276,12 +243,14 @@ const OperationModal: React.FC<OperationModalProps> = ({
             >
               Cancel
             </button>
-            {!isReadOnly && (
+            
+            {/* 4. CHANGE: Show Submit button if adding NEW or if EDITING is enabled */}
+            {(!isReadOnly || isEditing) && (
               <button
                 type="submit"
                 className="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 text-xs font-medium transition"
               >
-                {isEditing ? "Save Changes" : "Add Operation"}
+                {editingItem ? "Save Changes" : "Add Operation"}
               </button>
             )}
           </div>
