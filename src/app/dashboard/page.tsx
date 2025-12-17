@@ -25,7 +25,10 @@ export default function DashboardPage() {
             height={38} // Approximate height in pixels for md:h-8 (32px)
             className="h-6 md:h-8 w-auto mr-3" // Tailwind classes for visual size
           />
-          <h1 onClick={() => router.push("/dashboard")} className="flex items-center cursor-pointer font-semibold text-lg text-[#3b82f6]">
+          <h1
+            onClick={() => router.push("/dashboard")}
+            className="flex items-center cursor-pointer font-semibold text-lg text-[#3b82f6]"
+          >
             Harness ERP
           </h1>
           {/* Hide breadcrumb separator and 'Dashboard' on small screens */}
@@ -68,7 +71,7 @@ export default function DashboardPage() {
               }}
             ></span>
           </h3>
-<span className="hidden sm:block text-sm font-bold text-black">
+          <span className="hidden sm:block text-sm font-bold text-black">
             JJ Mills Bangladesh Pvt
           </span>
           {/* User Profile and Logout Dropdown (New Group/Hover structure) */}
@@ -112,13 +115,22 @@ export default function DashboardPage() {
               >
                 IE Department
               </h1>
-              <h1 onClick={() => router.push("/quality")} className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+              <h1
+                onClick={() => router.push("/quality")}
+                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+              >
                 Quality Modules
               </h1>
-              <h1 onClick={() => router.push("/system")} className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+              <h1
+                onClick={() => router.push("/system")}
+                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+              >
                 System
               </h1>
-              <h1 onClick={() => router.push("/printing")} className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+              <h1
+                onClick={() => router.push("/printing")}
+                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+              >
                 Printing
               </h1>
             </div>
@@ -146,7 +158,6 @@ export default function DashboardPage() {
         {/* MAIN DISPLAY AREA / RIGHT PANE */}
         <div className="w-full md:w-4/5 p-4 md:p-8 font-sans bg-[#3b83f60e] min-h-screen">
           {/* Settings Section - Responsive Column Layout */}
-       
 
           {/* REPORTS & MASTERS Section - Grid Layout */}
           <div className="pt-5">
