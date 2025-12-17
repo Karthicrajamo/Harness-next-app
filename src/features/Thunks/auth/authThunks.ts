@@ -54,9 +54,15 @@ export const LoginMiddleWare = createAsyncThunk<
       const err = error as AxiosError;
       console.error("Login Error:", err);
 
+      const errorData = err?.response?.data as
+        | Record<string, unknown>
+        | undefined;
+      const errorMessage =
+        (errorData?.error as Record<string, unknown>)?.message ||
+        "Login failed";
+
       return rejectWithValue(
-        (err?.response?.data as Record<string, unknown>)?.error?.message ||
-          "Login failed"
+        typeof errorMessage === "string" ? errorMessage : "Login failed"
       );
     }
   }
