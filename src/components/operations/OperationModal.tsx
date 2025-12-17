@@ -74,7 +74,7 @@ const OperationModal: React.FC<OperationModalProps> = ({ isOpen, onClose, onSubm
         // Construct the full object to submit
         const submissionData: OperationItem = {
             // Keep existing ID/Code if editing, generate new if adding
-            id: editingItem ? editingItem.id : Date.now(),
+            id: editingItem ? editingItem.id : Date.now().toString(),
             operationCode: editingItem ? editingItem.operationCode : `OP-${Date.now()}`,
             
             // Map form data to the OperationItem interface

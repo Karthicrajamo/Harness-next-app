@@ -11,9 +11,9 @@ import { dummyOperations } from "../../data/dummyOperations";
 
 const OperationListPage: React.FC = () => {
   const [operationData, setOperationData] = useState<OperationItem[]>(dummyOperations);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingItem, setEditingItem] = useState<OperationItem | null>(null);
-  const [isViewOnly, setIsViewOnly] = useState(false); // New state for View mode
+  const [isViewOnly, setIsViewOnly] = useState<boolean>(false); // New state for View mode
 
   // --- Handlers for Actions ---
 

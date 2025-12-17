@@ -25,7 +25,7 @@ const OperationCreationModal: React.FC<{ onClose: () => void }> = ({ onClose }) 
 // --- Page Component (The component that uses the Header) ---
 const OperationListPage: React.FC = () => {
     // State to control the visibility of the creation modal
-    const [isCreationModalOpen, setIsCreationModalOpen] = useState(false);
+    const [isCreationModalOpen, setIsCreationModalOpen] = useState<boolean>(false);
     
     // NOTE: You would typically fetch the initialData here and pass it to OperationTable
     // We are using the mock data included in OperationTable for this example.

@@ -14,7 +14,7 @@ import {
 // 1. UTILITY: useDebounce Hook
 // =========================================================================
 function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
@@ -109,8 +109,8 @@ const FilterDropdown: React.FC<{
   filterColumn: OperationFilterColumnKey;
   onFilterColumnChange: (column: OperationFilterColumnKey) => void;
 }> = ({ filterColumn, onFilterColumnChange }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
 
   const filterOptions: { key: OperationFilterColumnKey; label: string }[] = [
     { key: "all", label: "Search All Fields" },
