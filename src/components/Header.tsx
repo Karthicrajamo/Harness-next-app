@@ -124,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Page Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-14 z-10 px-4 py-3 shadow-sm mt-14">
+      <header className="bg-white border-b border-gray-200 sticky top-14 z-0 px-4 py-3 shadow-sm mt-14">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold text-gray-900">{title}</h2>
 

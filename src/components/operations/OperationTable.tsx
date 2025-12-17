@@ -202,7 +202,7 @@ const OperationTableToolbar: React.FC<OperationTableToolbarProps> = ({
 }) => (
   <div className="flex justify-between items-center p-3 border-b border-gray-200">
 
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 z-0">
       <FilterDropdown
         filterColumn={filterColumn}
         onFilterColumnChange={onFilterColumnChange}
