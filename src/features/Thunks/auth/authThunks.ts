@@ -17,6 +17,12 @@ interface LoginPayload {
 interface LoginResponse {
   token?: string;
   message?: string;
+  user?: {
+    id?: string;
+    name?: string;
+    email?: string;
+    [key: string]: unknown;
+  };
   [key: string]: unknown;
 }
 

@@ -42,7 +42,7 @@ const authSlice = createSlice({
       .addCase(LoginMiddleWare.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload?.token || null;
-        state.user = action.payload?.user || null;
+        state.user = (action.payload?.user as User) || null;
         state.error = null;
 
         if (action.payload?.token) {
