@@ -27,10 +27,10 @@ interface DashboardLayoutProps {
 // --- 2. Navigation Data ---
 
 const navigation: NavItem[] = [
-  { name: "Tickets", href: "/", icon: FiClipboard, current: true },
-  { name: "Search", href: "/search", icon: FiSearch, current: false },
-  { name: "Emails", href: "/emails", icon: FiMessageSquare, current: false },
-  { name: "Calendar", href: "/calendar", icon: FiCalendar, current: false },
+  // { name: "Tickets", href: "/", icon: FiClipboard, current: true },
+  // { name: "Search", href: "/search", icon: FiSearch, current: false },
+  // { name: "Emails", href: "/emails", icon: FiMessageSquare, current: false },
+  // { name: "Calendar", href: "/calendar", icon: FiCalendar, current: false },
   { name: "Users", href: "/users", icon: FiUsers, current: false },
   { name: "Help", href: "/help", icon: FiHelpCircle, current: false },
   { name: "Settings", href: "/settings", icon: FiSettings, current: false },
