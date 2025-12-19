@@ -73,7 +73,6 @@ import { postRequest } from "@/lib/commonService";
 
 export async function POST(req: Request) {
   try {
-
     const body = await req.json();
     console.log("Login request body:", body);
 
@@ -82,8 +81,7 @@ export async function POST(req: Request) {
     });
 
     const authToken =
-      backendResponse.headers["authorization"] ||
-      backendResponse.data?.token; 
+      backendResponse.headers["authorization"] || backendResponse.data?.token;
 
     if (!authToken) {
       return NextResponse.json(
@@ -94,7 +92,6 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
-
 
     const res = NextResponse.json({
       success: true,
@@ -111,17 +108,23 @@ export async function POST(req: Request) {
     });
 
     return res;
-  } catch (error: any) {
-    console.error("Login API error:", error?.response?.data || error.message);
+  } catch (error: unknown) {
+    const err = error as Record<string, unknown>;
+    const errorResponse = err?.response as Record<string, unknown>;
+    console.error(
+      "Login API error:",
+      errorResponse?.data || (err as Record<string, unknown>).message
+    );
 
     return NextResponse.json(
       {
         success: false,
         message:
-          error?.response?.data?.message || "Internal Server Error during login",
-        details: error?.response?.data || null,
+          (errorResponse?.data as Record<string, unknown>)?.message ||
+          "Internal Server Error during login",
+        details: errorResponse?.data || null,
       },
-      { status: error?.response?.status || 500 }
+      { status: (errorResponse?.status as number) || 500 }
     );
   }
 }

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/Header"; // Adjust path as needed
-import OperationTable, {
-  OperationItem,
-} from "../components/operations/OperationTable"; // Adjust path as needed
+import OperationTable from "../components/operations/OperationTable"; // Adjust path as needed
 
 // Define a placeholder component for the creation form/modal
 const OperationCreationModal: React.FC<{ onClose: () => void }> = ({
@@ -60,11 +58,11 @@ const OperationListPage: React.FC = () => {
         {/* 2. RENDER THE TABLE */}
         {/* We assume OperationTable handles its own data/filtering/sorting now */}
         <OperationTable
-          onEditClick={(_item) => console.log("Edit:", _item)}
-          onViewClick={function (_item: OperationItem): void {
+          onEditClick={() => console.log("Edit clicked")}
+          onViewClick={() => {
             throw new Error("Function not implemented.");
           }}
-          onDeleteClick={function (_ids: string[]): void {
+          onDeleteClick={() => {
             throw new Error("Function not implemented.");
           }}
         />

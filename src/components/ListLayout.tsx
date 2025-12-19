@@ -1,14 +1,6 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
-import {
-  FiSearch,
-  FiMessageSquare,
-  FiCalendar,
-  FiSettings,
-  FiHelpCircle,
-  FiUsers,
-  FiClipboard,
-} from "react-icons/fi";
+import { FiSettings, FiHelpCircle, FiUsers } from "react-icons/fi";
 import "primeicons/primeicons.css";
 
 // --- 1. Type Definitions ---

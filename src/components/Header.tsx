@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Router } from "next/router";
 import { FiPlus } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
@@ -67,7 +66,12 @@ const Header: React.FC<HeaderProps> = ({
             priority
           />
 
-          <h1 onClick={() => router.push("/dashboard")} className="font-semibold cursor-pointer text-lg text-[#3b82f6]">Harness ERP</h1>
+          <h1
+            onClick={() => router.push("/dashboard")}
+            className="font-semibold cursor-pointer text-lg text-[#3b82f6]"
+          >
+            Harness ERP
+          </h1>
 
           <span className="hidden sm:inline pi pi-chevron-right mx-2 text-gray-400 text-xs" />
           <span className="hidden sm:inline text-gray-600 text-sm">Admin</span>
