@@ -103,36 +103,373 @@ export default function DashboardPage() {
               <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
                 MODULES
               </h1>
-              <h1
-                onClick={() => router.push("/cutting")}
-                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700  hover:bg-blue-50 hover:text-blue-700 transition-colors"
-              >
-                Cutting Module
-              </h1>
-              <h1
-                onClick={() => router.push("/iedepartment")}
-                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer bg-blue-50 text-blue-700 transition-colors"
-              >
-                IE Department
-              </h1>
-              <h1
-                onClick={() => router.push("/quality")}
-                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-              >
-                Quality Modules
-              </h1>
-              <h1
-                onClick={() => router.push("/system")}
-                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-              >
-                System
-              </h1>
-              <h1
-                onClick={() => router.push("/printing")}
-                className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-              >
-                Printing
-              </h1>
+              
+              <div className="relative group">
+                {/* MODULE BUTTON */}
+                <button
+                  onClick={() => router.push("/cutting")}
+                  className="
+      w-full flex items-center justify-between
+      text-sm font-medium mb-3 p-2 rounded-lg
+      text-gray-700
+      hover:bg-blue-50 hover:text-blue-700
+      transition-colors
+    "
+                >
+                  <span>Cutting Module</span>
+                  {/* <span className="text-xs opacity-60 group-hover:opacity-100">▶</span> */}
+                </button>
+
+                {/* HOVER PANEL */}
+                <div
+                  className="
+      absolute left-full top-0 ml-3
+      w-72
+      bg-white
+      border border-gray-200
+      rounded-xl
+      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+      ring-1 ring-black/5
+
+      opacity-0 invisible translate-x-2
+      group-hover:opacity-100
+      group-hover:visible
+      group-hover:translate-x-0
+
+      transition-all duration-200 ease-out
+      z-50
+    "
+                >
+                  {/* PANEL HEADER */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <h3 className="text-sm font-semibold text-gray-800">
+                      Cutting Module
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Reports & Operations
+                    </p>
+                  </div>
+
+                  {/* MENU LIST */}
+                  <ul className="p-2 space-y-1">
+                    {[
+                      "Cut Panel Bundle Audit",
+                      "Daily Cutting CPI",
+                      "CPI QR Code Building Report",
+                      "Style Sys Id Tracking",
+                      "Bundle Operation",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="
+            flex items-center gap-2
+            p-2 rounded-md
+            text-sm text-gray-700
+            cursor-pointer
+            hover:bg-blue-500 hover:text-white
+            transition-colors
+          "
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="relative group">
+                {/* MODULE BUTTON */}
+                <button
+                  onClick={() => router.push("/iedepartment")}
+                  className="
+      w-full flex items-center justify-between
+      text-sm font-medium mb-3 p-2 rounded-lg
+      text-gray-700
+      hover:bg-blue-50 hover:text-blue-700
+      transition-colors
+    "
+                >
+                  <span>IE Department</span>
+                  {/* <span className="text-xs opacity-60 group-hover:opacity-100">▶</span> */}
+                </button>
+
+                {/* HOVER PANEL */}
+                <div
+                  className="
+      absolute left-full top-0 ml-3
+      w-72
+      bg-white
+      border border-gray-200
+      rounded-xl
+      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+      ring-1 ring-black/5
+
+      opacity-0 invisible translate-x-2
+      group-hover:opacity-100
+      group-hover:visible
+      group-hover:translate-x-0
+
+      transition-all duration-200 ease-out
+      z-50
+    "
+                >
+                  {/* PANEL HEADER */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <h3 className="text-sm font-semibold text-gray-800">
+                      IE Department
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Reports & Operations
+                    </p>
+                  </div>
+
+                  {/* MENU LIST */}
+                  <ul className="p-2 space-y-1">
+                    {[
+                      "Cut Panel Bundle Audit",
+                      "Daily Cutting CPI",
+                      "CPI QR Code Building Report",
+                      "Style Sys Id Tracking",
+                      "Bundle Operation",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="
+            flex items-center gap-2
+            p-2 rounded-md
+            text-sm text-gray-700
+            cursor-pointer
+            hover:bg-blue-500 hover:text-white
+            transition-colors
+          "
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="relative group">
+                {/* MODULE BUTTON */}
+                <button
+                  onClick={() => router.push("/quality")}
+                  className="
+      w-full flex items-center justify-between
+      text-sm font-medium mb-3 p-2 rounded-lg
+      text-gray-700
+      hover:bg-blue-50 hover:text-blue-700
+      transition-colors
+    "
+                >
+                  <span>Quality Modules</span>
+                </button>
+
+                {/* HOVER PANEL */}
+                <div
+                  className="
+      absolute left-full top-0 ml-3
+      w-72
+      bg-white
+      border border-gray-200
+      rounded-xl
+      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+      ring-1 ring-black/5
+
+      opacity-0 invisible translate-x-2
+      group-hover:opacity-100
+      group-hover:visible
+      group-hover:translate-x-0
+
+      transition-all duration-200 ease-out
+      z-50
+    "
+                >
+                  {/* PANEL HEADER */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <h3 className="text-sm font-semibold text-gray-800">
+                      Quality Modules
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Reports & Operations
+                    </p>
+                  </div>
+
+                  {/* MENU LIST */}
+                  <ul className="p-2 space-y-1">
+                    {[
+                      "Cut Panel Bundle Audit",
+                      "Daily Cutting CPI",
+                      "CPI QR Code Building Report",
+                      "Style Sys Id Tracking",
+                      "Bundle Operation",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="
+            flex items-center gap-2
+            p-2 rounded-md
+            text-sm text-gray-700
+            cursor-pointer
+            hover:bg-blue-500 hover:text-white
+            transition-colors
+          "
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="relative group">
+                {/* MODULE BUTTON */}
+                <button
+                  onClick={() => router.push("/system")}
+                  className="
+      w-full flex items-center justify-between
+      text-sm font-medium mb-3 p-2 rounded-lg
+      text-gray-700
+      hover:bg-blue-50 hover:text-blue-700
+      transition-colors
+    "
+                >
+                  <span>System</span>
+                </button>
+
+                {/* HOVER PANEL */}
+                <div
+                  className="
+      absolute left-full top-0 ml-3
+      w-72
+      bg-white
+      border border-gray-200
+      rounded-xl
+      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+      ring-1 ring-black/5
+
+      opacity-0 invisible translate-x-2
+      group-hover:opacity-100
+      group-hover:visible
+      group-hover:translate-x-0
+
+      transition-all duration-200 ease-out
+      z-50
+    "
+                >
+                  {/* PANEL HEADER */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <h3 className="text-sm font-semibold text-gray-800">
+                      System
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Reports & Operations
+                    </p>
+                  </div>
+
+                  {/* MENU LIST */}
+                  <ul className="p-2 space-y-1">
+                    {[
+                      "Cut Panel Bundle Audit",
+                      "Daily Cutting CPI",
+                      "CPI QR Code Building Report",
+                      "Style Sys Id Tracking",
+                      "Bundle Operation",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="
+            flex items-center gap-2
+            p-2 rounded-md
+            text-sm text-gray-700
+            cursor-pointer
+            hover:bg-blue-500 hover:text-white
+            transition-colors
+          "
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="relative group">
+                {/* MODULE BUTTON */}
+                <button
+                  onClick={() => router.push("/printing")}
+                  className="
+      w-full flex items-center justify-between
+      text-sm font-medium mb-3 p-2 rounded-lg
+      text-gray-700
+      hover:bg-blue-50 hover:text-blue-700
+      transition-colors
+    "
+                >
+                  <span>Printing</span>
+                  {/* <span className="text-xs opacity-60 group-hover:opacity-100">▶</span> */}
+                </button>
+
+                {/* HOVER PANEL */}
+                <div
+                  className="
+      absolute left-full top-0 ml-3
+      w-72
+      bg-white
+      border border-gray-200
+      rounded-xl
+      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+      ring-1 ring-black/5
+
+      opacity-0 invisible translate-x-2
+      group-hover:opacity-100
+      group-hover:visible
+      group-hover:translate-x-0
+
+      transition-all duration-200 ease-out
+      z-50
+    "
+                >
+                  {/* PANEL HEADER */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <h3 className="text-sm font-semibold text-gray-800">
+                      Printing
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Reports & Operations
+                    </p>
+                  </div>
+
+                  {/* MENU LIST */}
+                  <ul className="p-2 space-y-1">
+                    {[
+                      "Cut Panel Bundle Audit",
+                      "Daily Cutting CPI",
+                      "CPI QR Code Building Report",
+                      "Style Sys Id Tracking",
+                      "Bundle Operation",
+                    ].map((item) => (
+                      <li
+                        key={item}
+                        className="
+            flex items-center gap-2
+            p-2 rounded-md
+            text-sm text-gray-700
+            cursor-pointer
+            hover:bg-blue-500 hover:text-white
+            transition-colors
+          "
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
             <div className="mt-8">
               <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
@@ -170,7 +507,7 @@ export default function DashboardPage() {
               {/* Card 1: Cutting Module */}
 
               {/* Card 2: IE Department */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 flex flex-col max-h-72 min-w-64">
+              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
                 <div className="text-base font-semibold text-gray-800 mb-2">
                   IE Department
                 </div>
