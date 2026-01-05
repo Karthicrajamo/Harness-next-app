@@ -1,91 +1,96 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import "primeicons/primeicons.css";
 import Image from "next/image";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Initialize theme
+  useEffect(() => {
+    const isDark =
+      localStorage.getItem("theme") === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    setDarkMode(isDark);
+    if (isDark) document.documentElement.classList.add("dark");
+  }, []);
+
+  const toggleDarkMode = () => {
+    if (darkMode) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      setDarkMode(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setDarkMode(true);
+    }
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    // router.push("/login");
     router.push("/");
   };
 
   return (
-    <div>
-      {/* 1. FIXED HEADER (Responsive adjustments) */}
-      <div className="h-14 w-full fixed top-0 left-0 z-10 p-3 border-b border-gray-200 bg-white flex justify-between items-center">
-        {/* Left Side: Brand & Breadcrumb */}
+    <div className="min-h-screen transition-colors duration-300 bg-white dark:bg-gray-950">
+      {/* 1. FIXED HEADER */}
+      <div className="h-14 w-full fixed top-0 left-0 z-20 p-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex justify-between items-center transition-colors">
         <div className="flex items-center">
           <Image
-            src="https://res.cloudinary.com/dcgpglrqt/image/upload/v1765774217/Group_454_ynotl6.png" // Still uses the root-relative path
+            src="https://res.cloudinary.com/dcgpglrqt/image/upload/v1765774217/Group_454_ynotl6.png"
             alt="Harness ERP Logo"
-            width={38} // Approximate width in pixels for md:h-8 (32px)
-            height={38} // Approximate height in pixels for md:h-8 (32px)
-            className="h-6 md:h-8 w-auto mr-3" // Tailwind classes for visual size
+            width={38}
+            height={38}
+            className="h-6 md:h-8 w-auto mr-3 brightness-100 dark:brightness-125"
           />
           <h1
             onClick={() => router.push("/dashboard")}
-            className="flex items-center cursor-pointer font-semibold text-lg text-[#3b82f6]"
+            className="flex items-center cursor-pointer font-semibold text-lg text-[#3b82f6] dark:text-blue-400"
           >
             Harness ERP
           </h1>
-          {/* Hide breadcrumb separator and 'Dashboard' on small screens */}
-          <span
-            className="hidden sm:inline pi pi-chevron-right"
-            style={{
-              fontSize: "0.7rem",
-              marginLeft: "6px",
-              color: "gray",
-            }}
-          ></span>
-          <h3 className="hidden sm:flex mx-2 items-center text-gray-600 text-sm">
+          <span className="hidden sm:inline pi pi-chevron-right ml-2 text-gray-400 text-[0.7rem]"></span>
+          <h3 className="hidden sm:flex mx-2 items-center text-gray-600 dark:text-gray-400 text-sm">
             Home
           </h3>
         </div>
 
-        {/* Right Side: Search, Notifications, User */}
         <div className="flex items-center space-x-2 sm:space-x-4">
-          {/* Search Bar - Hide completely on extra small screens, show on small screens and up */}
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:ring-2 ring-blue-500 transition-all"
+          >
+            <i className={`pi ${darkMode ? "pi-sun" : "pi-moon"}`}></i>
+          </button>
+
           <div className="relative hidden sm:block w-32 md:w-48">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 pi pi-search text-gray-500 text-xs md:text-sm"></span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 pi pi-search text-gray-500 dark:text-gray-400 text-xs"></span>
             <input
               type="text"
-              className="pl-8 sm:pl-10 border border-gray-300 rounded-lg bg-gray-100 w-full py-1 text-sm"
+              className="pl-9 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-white w-full py-1 text-sm outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Search..."
             />
           </div>
 
-          <span className="pi pi-bell text-gray-500 text-sm md:text-base"></span>
+          <span className="pi pi-bell text-gray-500 dark:text-gray-400 cursor-pointer"></span>
 
-          {/* Help Menu - Hide completely on small screens, show on medium and up */}
-          <h3 className="hidden md:flex items-center text-gray-600 border-l pl-2 border-gray-200 text-sm">
-            Help
-            <span
-              className="pi pi-chevron-down"
-              style={{
-                fontSize: "0.8rem",
-                marginLeft: "4px",
-                color: "lightgray",
-              }}
-            ></span>
-          </h3>
-          <span className="hidden sm:block text-sm font-bold text-black">
+          <span className="hidden sm:block text-sm font-bold text-black dark:text-white">
             JJ Mills Bangladesh Pvt
           </span>
-          {/* User Profile and Logout Dropdown (New Group/Hover structure) */}
+
           <div className="relative group">
-            {/* User Initial Badge (Modified: Added lg:text-sm) */}
-            <h1 className="bg-orange-400 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-white text-sm md:text-base **lg:text-sm** cursor-pointer">
+            <h1 className="bg-orange-400 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-white text-sm font-bold cursor-pointer">
               KA
             </h1>
-
-            {/* Logout Dropdown */}
-            <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg hidden **group-hover:block** z-20">
+            <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg hidden group-hover:block z-20">
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center"
+                className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
               >
                 <span className="pi pi-sign-out mr-2"></span>
                 Logout
@@ -95,659 +100,148 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 2. MAIN CONTENT WRAPPER (Responsive change from flex to block/column) */}
       <div className="block md:flex pt-14">
-        <div className="hidden md:flex flex-col justify-between md:w-1/5 pt-6 pl-6 pr-4 border-r border-gray-100 bg-white shadow-xl z-10 sticky top-14 h-[calc(100vh-3.5rem)]">
-          <div className="">
-            <div>
-              <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
-                MODULES
-              </h1>
+        {/* 2. SIDEBAR */}
+        <div className="hidden md:flex flex-col justify-between md:w-1/5 pt-6 pl-6 pr-4 border-r border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl z-10 sticky top-14 h-[calc(100vh-3.5rem)] transition-colors">
+          <div>
+            <h1 className="text-sm font-bold text-[#3b82f6] dark:text-blue-400 mb-5 tracking-wider uppercase">
+              Modules
+            </h1>
 
-              <div className="relative group">
+            {/* Reusable Sidebar Module Item */}
+            {[
+              ["Cutting Module", "/cutting"],
+              ["IE Department", "/iedepartment"],
+              ["Quality Modules", "/quality"],
+              ["System", "/system"],
+              ["Printing", "/printing"],
+            ].map(([label, path]) => (
+              <div key={label} className="relative group">
                 {/* MODULE BUTTON */}
                 <button
-                  onClick={() => router.push("/cutting")}
-                  className="
-      w-full flex items-center justify-between
-      text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
-      transition-colors
-    "
+                  onClick={() => router.push(path)}
+                  className="w-full flex items-center justify-between text-sm font-medium mb-3 p-2 rounded-lg 
+                 text-gray-700 dark:text-gray-300 
+                 hover:bg-blue-50 dark:hover:bg-blue-900/30 
+                 hover:text-blue-700 dark:hover:text-blue-400 
+                 transition-all duration-200"
                 >
-                  <span>Cutting Module</span>
-                  {/* <span className="text-xs opacity-60 group-hover:opacity-100">▶</span> */}
+                  <span>{label}</span>
                 </button>
-
-                {/* HOVER PANEL */}
-                <div
-                  className="
-      absolute left-full top-0 ml-3
-      w-72
-      bg-white
-      border border-gray-200
-      rounded-xl
-      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
-      ring-1 ring-black/5
-
-      opacity-0 invisible translate-x-2
-      group-hover:opacity-100
-      group-hover:visible
-      group-hover:translate-x-0
-
-      transition-all duration-200 ease-out
-      z-50
-    "
-                >
-                  {/* PANEL HEADER */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      Cutting Module
+                {/* Hover Panel */}
+                <div className="absolute left-full top-0 ml-3 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl opacity-0 invisible translate-x-2 group-hover:opacity-100 group-hover:visible group-hover:translate-x-0 transition-all duration-200 z-50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+                    <h3 className="text-sm font-semibold dark:text-white">
+                      {label}
                     </h3>
                     <p className="text-xs text-gray-500">
                       Reports & Operations
                     </p>
                   </div>
-
-                  {/* MENU LIST */}
                   <ul className="p-2 space-y-1">
-                    {[
-                      "Cut Panel Bundle Audit",
-                      "Daily Cutting CPI",
-                      "CPI QR Code Building Report",
-                      "Style Sys Id Tracking",
-                      "Bundle Operation",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="
-            flex items-center gap-2
-            p-2 rounded-md
-            text-sm text-gray-700
-            cursor-pointer
-            hover:bg-blue-500 hover:text-white
-            transition-colors
-          "
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
-                        {item}
-                      </li>
-                    ))}
+                    <li className="p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white rounded-md cursor-pointer transition-colors">
+                      View All Reports
+                    </li>
+                    <li className="p-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white rounded-md cursor-pointer transition-colors">
+                      Manage Operations
+                    </li>
                   </ul>
                 </div>
               </div>
-
-              <div className="relative group">
-                {/* MODULE BUTTON */}
-                <button
-                  onClick={() => router.push("/iedepartment")}
-                  className="
-      w-full flex items-center justify-between
-      text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
-      transition-colors
-    "
-                >
-                  <span>IE Department</span>
-                  {/* <span className="text-xs opacity-60 group-hover:opacity-100">▶</span> */}
-                </button>
-
-                {/* HOVER PANEL */}
-                <div
-                  className="
-      absolute left-full top-0 ml-3
-      w-72
-      bg-white
-      border border-gray-200
-      rounded-xl
-      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
-      ring-1 ring-black/5
-
-      opacity-0 invisible translate-x-2
-      group-hover:opacity-100
-      group-hover:visible
-      group-hover:translate-x-0
-
-      transition-all duration-200 ease-out
-      z-50
-    "
-                >
-                  {/* PANEL HEADER */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      IE Department
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      Reports & Operations
-                    </p>
-                  </div>
-
-                  {/* MENU LIST */}
-                  <ul className="p-2 space-y-1">
-                    {[
-                      "Cut Panel Bundle Audit",
-                      "Daily Cutting CPI",
-                      "CPI QR Code Building Report",
-                      "Style Sys Id Tracking",
-                      "Bundle Operation",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="
-            flex items-center gap-2
-            p-2 rounded-md
-            text-sm text-gray-700
-            cursor-pointer
-            hover:bg-blue-500 hover:text-white
-            transition-colors
-          "
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="relative group">
-                {/* MODULE BUTTON */}
-                <button
-                  onClick={() => router.push("/quality")}
-                  className="
-      w-full flex items-center justify-between
-      text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
-      transition-colors
-    "
-                >
-                  <span>Quality Modules</span>
-                </button>
-
-                {/* HOVER PANEL */}
-                <div
-                  className="
-      absolute left-full top-0 ml-3
-      w-72
-      bg-white
-      border border-gray-200
-      rounded-xl
-      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
-      ring-1 ring-black/5
-
-      opacity-0 invisible translate-x-2
-      group-hover:opacity-100
-      group-hover:visible
-      group-hover:translate-x-0
-
-      transition-all duration-200 ease-out
-      z-50
-    "
-                >
-                  {/* PANEL HEADER */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      Quality Modules
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      Reports & Operations
-                    </p>
-                  </div>
-
-                  {/* MENU LIST */}
-                  <ul className="p-2 space-y-1">
-                    {[
-                      "Cut Panel Bundle Audit",
-                      "Daily Cutting CPI",
-                      "CPI QR Code Building Report",
-                      "Style Sys Id Tracking",
-                      "Bundle Operation",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="
-            flex items-center gap-2
-            p-2 rounded-md
-            text-sm text-gray-700
-            cursor-pointer
-            hover:bg-blue-500 hover:text-white
-            transition-colors
-          "
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="relative group">
-                {/* MODULE BUTTON */}
-                <button
-                  onClick={() => router.push("/system")}
-                  className="
-      w-full flex items-center justify-between
-      text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
-      transition-colors
-    "
-                >
-                  <span>System</span>
-                </button>
-
-                {/* HOVER PANEL */}
-                <div
-                  className="
-      absolute left-full top-0 ml-3
-      w-72
-      bg-white
-      border border-gray-200
-      rounded-xl
-      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
-      ring-1 ring-black/5
-
-      opacity-0 invisible translate-x-2
-      group-hover:opacity-100
-      group-hover:visible
-      group-hover:translate-x-0
-
-      transition-all duration-200 ease-out
-      z-50
-    "
-                >
-                  {/* PANEL HEADER */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      System
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      Reports & Operations
-                    </p>
-                  </div>
-
-                  {/* MENU LIST */}
-                  <ul className="p-2 space-y-1">
-                    {[
-                      "Cut Panel Bundle Audit",
-                      "Daily Cutting CPI",
-                      "CPI QR Code Building Report",
-                      "Style Sys Id Tracking",
-                      "Bundle Operation",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="
-            flex items-center gap-2
-            p-2 rounded-md
-            text-sm text-gray-700
-            cursor-pointer
-            hover:bg-blue-500 hover:text-white
-            transition-colors
-          "
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="relative group">
-                {/* MODULE BUTTON */}
-                <button
-                  onClick={() => router.push("/printing")}
-                  className="
-      w-full flex items-center justify-between
-      text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
-      transition-colors
-    "
-                >
-                  <span>Printing</span>
-                  {/* <span className="text-xs opacity-60 group-hover:opacity-100">▶</span> */}
-                </button>
-
-                {/* HOVER PANEL */}
-                <div
-                  className="
-      absolute left-full top-0 ml-3
-      w-72
-      bg-white
-      border border-gray-200
-      rounded-xl
-      shadow-[0_20px_40px_rgba(0,0,0,0.18)]
-      ring-1 ring-black/5
-
-      opacity-0 invisible translate-x-2
-      group-hover:opacity-100
-      group-hover:visible
-      group-hover:translate-x-0
-
-      transition-all duration-200 ease-out
-      z-50
-    "
-                >
-                  {/* PANEL HEADER */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      Printing
-                    </h3>
-                    <p className="text-xs text-gray-500">
-                      Reports & Operations
-                    </p>
-                  </div>
-
-                  {/* MENU LIST */}
-                  <ul className="p-2 space-y-1">
-                    {[
-                      "Cut Panel Bundle Audit",
-                      "Daily Cutting CPI",
-                      "CPI QR Code Building Report",
-                      "Style Sys Id Tracking",
-                      "Bundle Operation",
-                    ].map((item) => (
-                      <li
-                        key={item}
-                        className="
-            flex items-center gap-2
-            p-2 rounded-md
-            text-sm text-gray-700
-            cursor-pointer
-            hover:bg-blue-500 hover:text-white
-            transition-colors
-          "
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500 group-hover:bg-white" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8">
-              <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
-                Administrator
-              </h1>
-              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                Customization
-              </h1>
-              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                Tools
-              </h1>
-              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                Users
-              </h1>
-            </div>
+            ))}
           </div>
-          <div className=" flex justify-center  py-3 mt-4 border-t border-gray-200 text-center">
-            <p className="text-xs text-blue-600 font-semibold uppercase tracking-wider">
-              JJ Mills Bangaladesh Pvt
+          <div className="py-3 border-t border-gray-200 dark:border-gray-800 text-center">
+            <p className="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest">
+              JJ Mills Bangladesh
             </p>
           </div>
         </div>
-        {/* MAIN DISPLAY AREA / RIGHT PANE */}
-        <div className="w-full md:w-4/5 p-4 md:p-8 font-sans bg-[#3b83f60e] min-h-screen">
-          {/* Settings Section - Responsive Column Layout */}
 
-          {/* REPORTS & MASTERS Section - Grid Layout */}
+        {/* 3. MAIN DISPLAY AREA */}
+        <div className="w-full md:w-4/5 p-4 md:p-8 bg-[#3b83f60e] dark:bg-gray-950 transition-colors">
+        <div className="mb-8">
+            <div className="flex items-center justify-between font-bold">
+              <h1 className="text-sm font-bold text-[#3b82f6] tracking-wider">
+                RECENTLY USED
+              </h1>
+              <span className="pi pi-ellipsis-h bg-[#3b83f6ce] p-2 rounded-sm text-white text-xs"></span>
+            </div>
+            {/* Card Layout: Changes from horizontal flex to stacked columns on mobile */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-2">
+              <div className="border border-[#3b82f6]/30 rounded-md p-3 flex items-start">
+                <div className="flex items-center">
+                  <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                  <h6 className="group-hover:text-white">
+                    Cut Panel Bundle Audit
+                  </h6>
+                </div>
+              </div>
+              <div className="border border-[#3b82f6]/30 rounded-md p-3 flex items-start">
+                <div className="flex items-center">
+                  <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                  <h6 className="group-hover:text-white">Bundle Audit</h6>
+                </div>
+              </div>
+              <div className="border border-[#3b82f6]/30 rounded-md p-3 flex items-start">
+                <div className="flex items-center">
+                  <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                  <h6 className="group-hover:text-white">Operation Master</h6>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="pt-5">
-            <div className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
-              APPLICATIONS
+            <div className="text-sm font-bold text-[#3b82f6] dark:text-blue-400 mb-5 tracking-wider uppercase">
+              Applications
             </div>
 
-            {/* Grid Layout: 1 column on mobile, 2 on medium, 3 on large */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {/* Card 1: Cutting Module */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                <div className="text-base font-semibold text-gray-800 mb-2">
-                  Cutting Module
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Card Example (Applied to all) */}
+              {[
+                "Cutting Module",
+                "IE Department",
+                "Quality Modules",
+                "System",
+                "Printing",
+              ].map((title) => (
+                <div
+                  key={title}
+                  className="bg-white dark:bg-gray-900 border border-[#3b82f6]/30 dark:border-gray-800 rounded-xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 "
+                >
+                  <div className="text-base font-bold text-gray-800 dark:text-white mb-4">
+                    {title}
+                  </div>
+                  <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i
+                        className="pi pi-file mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"
+                      ></i>
+                      <h6 className="font-medium">Daily Reports</h6>
+                    </div>
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i
+                        className="pi pi-cog mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"
+                      ></i>
+                      <h6 className="font-medium">Operations Master</h6>
+                    </div>
+                  </div>
+                  <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i className="pi pi-box mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium">Report</h6>
+                    </div>
                 </div>
-                <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                  <ul>
-                    {/* 👇 Fixed and improved hover logic for all list items 👇 */}
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Cut Panel Bundle Audit
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Daily Cutting CPI
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        CPI QR Code Building Report
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        {" "}
-                        Style Sys Id Tracking
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Bundle Audit</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Bundle Operation
-                      </h6>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Card 2: IE Department */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                <div className="text-base font-semibold text-gray-800 mb-2">
-                  IE Department
-                </div>
-                <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                  <ul>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Style Operation
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Operation Master
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">IE Report</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Daily Forecast Report
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        QR Operation Reports
-                      </h6>
-                    </li>
-                    <li className="menu-item group p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-gray-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Manpower Lost Time
-                      </h6>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Card 3: Quality Modules */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                <div className="text-base font-semibold text-gray-800 mb-2">
-                  Quality Modules
-                </div>
-                <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                  <ul>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">AQl Forms</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        All Quality Check Forms
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Quality Report</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Rework</h6>
-                    </li>
-                    <li className="menu-item group p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-grey-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Fabric Inspection Report
-                      </h6>
-                    </li>
-                    <li className="menu-item group last-child p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-grey-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Inline Quality Audit Report
-                      </h6>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Card 4: System */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                <div className="text-base font-semibold text-gray-800 mb-2">
-                  System
-                </div>
-                <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                  <ul>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Admin</h6>
-                    </li>
-                    <li className="menu-item group active-bullet last-child p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Maintenance</h6>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Card 5: Printing */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                <div className="text-base font-semibold text-gray-800 mb-2">
-                  Printing
-                </div>
-                <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                  <ul>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Print Format Builder
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Print Settings</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Print Format</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">Print Style</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors   text-blue-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">PDF Generation</h6>
-                    </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-gray-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Watermark Settings
-                      </h6>
-                    </li>
-                    <li className="menu-item group active-bullet last-child p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-gray-500 group-hover:text-white"></span>
-                      <h6 className="group-hover:text-white">
-                        Thermal Printer Setup
-                      </h6>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      <style jsx global>{`
-        /* 1. Custom List Item Styling (Note: Hover styles are now in Tailwind classes) */
-        .menu-item {
-          font-size: 14px;
-          color: #555;
-          /* Removed padding: 8px 0; to let Tailwind p-2 control it */
-          /* Removed border-bottom for cleaner Tailwind look */
-          display: flex;
-          align-items: center;
-          list-style: none;
-          cursor: pointer;
-        }
-
-        /* Add the grey bullet dot */
-        /* ... (Keep or remove bullet styles as needed) */
-
-        /* Blue dot for selected items (like in the Website container) */
-        .active-bullet::before {
-          color: #3b82f6; /* Tailwind blue-500 equivalent */
-        }
-
-        /* Remove border from the last item in the list */
-        .menu-item:last-child {
-          border-bottom: none;
-        }
-
-        /* 2. Scrollbar Hiding */
-        /* For WebKit (Chrome, Safari, Edge) */
-        .custom-scrollbar::-webkit-scrollbar {
-          display: none; /* Hide the scrollbar itself */
-          width: 0; /* Ensures no space is reserved */
-        }
-
-        /* For Firefox */
-        .custom-scrollbar {
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none; /* Firefox */
-        }
-
-        .last-child {
-          border-bottom: none !important; /* Ensure last child border is hidden */
-        }
-      `}</style>
+      {/* <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-track { background: #111827; }
+        html.dark { color-scheme: dark; }
+      `}</style> */}
     </div>
   );
 }

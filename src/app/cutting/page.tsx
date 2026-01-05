@@ -111,8 +111,7 @@ export default function DashboardPage() {
                   className="
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+     bg-blue-50 text-blue-700
       transition-colors
     "
                 >
@@ -499,49 +498,49 @@ export default function DashboardPage() {
           {/* REPORTS & MASTERS Section - Grid Layout */}
           <div className="pt-5">
             <div className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
-              APPLICATIONS
+              Cutting Module
             </div>
 
             {/* Grid Layout: 1 column on mobile, 2 on medium, 3 on large */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ">
               {/* Card 1: Cutting Module */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                <div className="text-base font-semibold text-gray-800 mb-2">
+              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col w-5xl h-[500px] shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
+                {/* <div className="text-base font-semibold text-gray-800 mb-2">
                   Cutting Module
-                </div>
+                </div> */}
                 <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                  <ul>
+                  <ul className="">
                     {/* 👇 Fixed and improved hover logic for all list items 👇 */}
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white w-60">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         Cut Panel Bundle Audit
                       </h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white w-60">
                       <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         Daily Cutting CPI
                       </h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white w-60">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         CPI QR Code Building Report
                       </h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white w-60">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         {" "}
                         Style Sys Id Tracking
                       </h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white w-60">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Bundle Audit</h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white w-60">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         Bundle Operation

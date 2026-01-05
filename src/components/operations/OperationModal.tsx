@@ -121,7 +121,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex justify-center p-4">
       <div
-        className="relative bg-white shadow-2xl rounded-xl w-full max-w-2xl transform transition-all duration-300"
+        className="relative  bg-white shadow-2xl rounded-xl w-full max-w-2xl transform transition-all duration-300"
         style={{ marginTop: "5vh", maxHeight: "90vh" }}
       >
         {/* Modal Header */}
@@ -155,7 +155,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto ">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700">
@@ -168,6 +168,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 onChange={handleChange}
                 required
                 disabled={isDisabled}
+                placeholder="Enter Operation"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50 disabled:text-gray-500"
               />
             </div>
@@ -183,6 +184,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 value={formData.smv}
                 onChange={handleChange}
                 disabled={isDisabled}
+                placeholder="Enter SMV"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
@@ -199,6 +201,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 value={formData.machineCode}
                 onChange={handleChange}
                 disabled={isDisabled}
+                placeholder="Enter Machine Code"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
@@ -212,6 +215,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 value={formData.masterOperation}
                 onChange={handleChange}
                 disabled={isDisabled}
+                placeholder="Enter Master Operation"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
@@ -225,6 +229,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 value={formData.skillGrade}
                 onChange={handleChange}
                 disabled={isDisabled}
+                placeholder="Enter Skill Grade"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
@@ -241,6 +246,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 value={formData.hindi}
                 onChange={handleChange}
                 disabled={isDisabled}
+                placeholder="Enter Hindi Translation"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
@@ -254,6 +260,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
                 value={formData.tamil}
                 onChange={handleChange}
                 disabled={isDisabled}
+                placeholder="Enter Tamil Translation"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs disabled:bg-gray-50"
               />
             </div>
@@ -269,10 +276,28 @@ const OperationModal: React.FC<OperationModalProps> = ({
               onChange={handleChange}
               rows={2}
               disabled={isDisabled}
+              placeholder="Enter Comments"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs resize-none disabled:bg-gray-50"
             ></textarea>
           </div>
-
+<div className="relative">
+  <textarea
+    name="comments"
+    value={formData.comments}
+    onChange={handleChange}
+    disabled={isDisabled}
+    rows={2}
+    placeholder=" "
+    className="peer w-full border border-blue-600 rounded-md px-3 pt-4 pb-2 text-xs resize-none focus:outline-none focus:ring-0 disabled:bg-gray-50"
+  />
+  <label className="absolute left-2 top-2 bg-white px-1 text-xs text-blue-600 transition-all
+    peer-placeholder-shown:top-3.5
+    peer-placeholder-shown:text-gray-400
+    peer-focus:top-2
+    peer-focus:text-blue-600">
+    Comments
+  </label>
+</div>
           {/* Action Buttons */}
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-100">
             <button
@@ -287,7 +312,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
             {(!isReadOnly || isEditing) && (
               <button
                 type="submit"
-                className="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 text-xs font-medium transition"
+                className="px-5 py-2 bg-[#3b82f6] text-white rounded-lg shadow-md hover:bg-blue-700 text-xs font-medium transition"
               >
                 {editingItem ? "Save Changes" : "Add Operation"}
               </button>

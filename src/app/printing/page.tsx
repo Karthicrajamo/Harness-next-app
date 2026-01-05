@@ -404,8 +404,7 @@ export default function DashboardPage() {
                   className="
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      bg-blue-50 text-blue-700
       transition-colors
     "
                 >
@@ -519,19 +518,19 @@ export default function DashboardPage() {
                         Print Format Builder
                       </h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#974afd] hover:text-white">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Print Settings</h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Print Format</h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-orange-400 hover:text-white">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Print Style</h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#3396D3] hover:text-white">
                       <span className="pi pi-box mr-2 text-sm transition-colors   text-blue-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">PDF Generation</h6>
                     </li>

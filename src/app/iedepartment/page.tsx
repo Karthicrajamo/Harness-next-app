@@ -103,7 +103,7 @@ export default function DashboardPage() {
               <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
                 MODULES
               </h1>
-              
+
               <div className="relative group">
                 {/* MODULE BUTTON */}
                 <button
@@ -123,7 +123,7 @@ export default function DashboardPage() {
                 {/* HOVER PANEL */}
                 <div
                   className="
-      absolute left-full top-0 ml-3
+      absolute left-30 top-0 ml-3
       w-72
       bg-white
       border border-gray-200
@@ -185,8 +185,7 @@ export default function DashboardPage() {
                   className="
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      bg-blue-50 text-blue-700
       transition-colors
     "
                 >
@@ -197,7 +196,7 @@ export default function DashboardPage() {
                 {/* HOVER PANEL */}
                 <div
                   className="
-      absolute left-full top-0 ml-3
+      absolute left-30 top-0 ml-3
       w-72
       bg-white
       border border-gray-200
@@ -343,7 +342,7 @@ export default function DashboardPage() {
                 {/* HOVER PANEL */}
                 <div
                   className="
-      absolute left-full top-0 ml-3
+      absolute left-30 top-0 ml-3
       w-72
       bg-white
       border border-gray-200
@@ -365,9 +364,9 @@ export default function DashboardPage() {
                     <h3 className="text-sm font-semibold text-gray-800">
                       System
                     </h3>
-                    <p className="text-xs text-gray-500">
+                    {/* <p className="text-xs text-gray-500">
                       Reports & Operations
-                    </p>
+                    </p> */}
                   </div>
 
                   {/* MENU LIST */}
@@ -438,9 +437,9 @@ export default function DashboardPage() {
                     <h3 className="text-sm font-semibold text-gray-800">
                       Printing
                     </h3>
-                    <p className="text-xs text-gray-500">
+                    {/* <p className="text-xs text-gray-500">
                       Reports & Operations
-                    </p>
+                    </p> */}
                   </div>
 
                   {/* MENU LIST */}
@@ -493,20 +492,15 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* MAIN DISPLAY AREA / RIGHT PANE */}
-        <div className="w-full md:w-4/5 p-4 md:p-8 font-sans bg-[#3b83f60e] min-h-screen">
-          {/* Settings Section - Responsive Column Layout */}
+        {/* <div className="w-full md:w-4/5 p-4 md:p-8 font-sans bg-[#3b83f60e] min-h-screen">
 
-          {/* REPORTS & MASTERS Section - Grid Layout */}
           <div className="pt-5">
             <div className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
               APPLICATIONS
             </div>
 
-            {/* Grid Layout: 1 column on mobile, 2 on medium, 3 on large */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {/* Card 1: Cutting Module */}
 
-              {/* Card 2: IE Department */}
               <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
                 <div className="text-base font-semibold text-gray-800 mb-2">
                   IE Department
@@ -550,6 +544,55 @@ export default function DashboardPage() {
                   </ul>
                 </div>
               </div>
+            </div>
+          </div>
+        </div> */}
+        <div className="w-full md:w-4/5 p-4 md:p-8 bg-[#3b83f60e] dark:bg-gray-950 transition-colors">
+          <div className="pt-5">
+            <div className="text-sm font-bold text-[#3b82f6] dark:text-blue-400 mb-5 tracking-wider uppercase">
+              Applications
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Card Example (Applied to all) */}
+              {[
+                // "Cutting Module",
+                "IE Department",
+                // "Quality Modules",
+                // "System",
+                // "Printing",
+              ].map((title) => (
+                <div
+                  key={title}
+                  className="bg-white dark:bg-gray-900 border border-[#3b82f6]/30 dark:border-gray-800 rounded-xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 "
+                >
+                  <div className="text-base font-bold text-gray-800 dark:text-white mb-2">
+                    {title}
+                  </div>
+                  <div className="space-y-1 max-h-48 overflow-y-auto custom-scrollbar">
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i className="pi pi-building mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium">Style Operation</h6>
+                    </div>
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i className="pi pi-globe mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium">Operations Master</h6>
+                    </div>
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i className="pi pi-box mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium">IE Report</h6>
+                    </div>
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i className="pi pi-globe mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium">Daily Forecast Report</h6>
+                    </div>
+                    <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
+                      <i className="pi pi-cog mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium">QR Operation Reports</h6>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

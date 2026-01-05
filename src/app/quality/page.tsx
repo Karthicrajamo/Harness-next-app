@@ -97,8 +97,8 @@ export default function DashboardPage() {
 
       {/* 2. MAIN CONTENT WRAPPER (Responsive change from flex to block/column) */}
       <div className="block md:flex pt-14">
-        <div className="hidden md:flex flex-col justify-between md:w-1/5 pt-6 pl-6 pr-4 border-r border-gray-100 bg-white shadow-xl z-10 sticky top-14 h-[calc(100vh-3.5rem)]">
-          <div className="">
+        <div className="hidden md:flex flex-col justify-between md:w-1/5 pt-6 pl-6 pr-4 border-r border-gray-100 bg-[#657BE3] shadow-xl z-10 sticky top-14 h-[calc(100vh-3.5rem)]">
+          <div className="bg-white p-4 rounded-lg shadow-md">
             <div>
               <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
                 MODULES
@@ -112,7 +112,7 @@ export default function DashboardPage() {
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
       text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      hover:bg-blue-50 hover:text-[#657BE3]
       transition-colors
     "
                 >
@@ -186,7 +186,7 @@ export default function DashboardPage() {
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
       text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      hover:bg-blue-50 hover:text-[#657BE3]
       transition-colors
     "
                 >
@@ -259,8 +259,7 @@ export default function DashboardPage() {
                   className="
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
-      text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      bg-blue-50 text-[#657BE3]
       transition-colors
     "
                 >
@@ -333,7 +332,7 @@ export default function DashboardPage() {
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
       text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      hover:bg-blue-50 hover:text-[#657BE3]
       transition-colors
     "
                 >
@@ -405,7 +404,7 @@ export default function DashboardPage() {
       w-full flex items-center justify-between
       text-sm font-medium mb-3 p-2 rounded-lg
       text-gray-700
-      hover:bg-blue-50 hover:text-blue-700
+      hover:bg-blue-50 hover:text-[#657BE3]
       transition-colors
     "
                 >
@@ -475,20 +474,20 @@ export default function DashboardPage() {
               <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
                 Administrator
               </h1>
-              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-[#657BE3] transition-colors">
                 Customization
               </h1>
-              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-[#657BE3] transition-colors">
                 Tools
               </h1>
-              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+              <h1 className="text-sm font-medium mb-3 p-2 rounded-lg cursor-pointer text-gray-700 hover:bg-blue-50 hover:text-[#657BE3] transition-colors">
                 Users
               </h1>
             </div>
           </div>
           <div className=" flex justify-center  py-3 mt-4 border-t border-gray-200 text-center">
-            <p className="text-xs text-blue-600 font-semibold uppercase tracking-wider">
-              JJ Mills Bangaladesh Pvt
+            <p className="text-xs text-[#657BE3] font-semibold uppercase tracking-wider bg-white px-4 py-2 rounded-lg shadow-md">
+              version 1.0.0
             </p>
           </div>
         </div>
@@ -505,28 +504,28 @@ export default function DashboardPage() {
             {/* Grid Layout: 1 column on mobile, 2 on medium, 3 on large */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {/* Card 3: Quality Modules */}
-              <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
+              <div className="bg-white border border-[#657BE3] rounded-xl p-4 flex flex-col max-h-72 min-w-64 shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
                 <div className="text-base font-semibold text-gray-800 mb-2">
                   Quality Modules
                 </div>
                 <div className="grow overflow-y-auto pr-2 custom-scrollbar">
                   <ul>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-box mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                      <span className="pi pi-box mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">AQl Forms</h6>
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                      <span className="pi pi-globe mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         All Quality Check Forms
                       </h6>
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                      <span className="pi pi-building mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Quality Report</h6>
                     </li>
                     <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
-                      <span className="pi pi-building mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
+                      <span className="pi pi-building mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Rework</h6>
                     </li>
                     <li className="menu-item group p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
