@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { FiPlus } from "react-icons/fi";
 import { useRouter } from "next/navigation";
-import AppHeader from "./AppHeader";
-import { head } from "motion/react-client";
+import CommonAppHeader from "./ComonAppHeader";
 
 /* ----------------------------------
    Types
@@ -10,15 +9,15 @@ import { head } from "motion/react-client";
 
 interface HeaderProps {
   title: string;
-  headerText: string;
+  headertext: string;
   showCreateButton?: boolean;
   onCreateClick?: () => void;
-  addButtonText?: string;
+  addTextBtn?: string;
 }
 
 interface AnimatedCreateButtonProps {
   onClick?: () => void;
-  addButtonText?: string;
+  addTextBtn?: string;
 }
 
 /* ----------------------------------
@@ -27,7 +26,7 @@ interface AnimatedCreateButtonProps {
 
 const AnimatedCreateButton: React.FC<AnimatedCreateButtonProps> = ({
   onClick,
-  addButtonText
+  addTextBtn,
 }) => {
   return (
     <button
@@ -42,7 +41,7 @@ const AnimatedCreateButton: React.FC<AnimatedCreateButtonProps> = ({
       "
     >
       <FiPlus className="w-5 h-5" />
-      <span className="font-semibold">Add {addButtonText}</span>
+      <span className="font-semibold">Add {addTextBtn}</span>
     </button>
   );
 };
@@ -51,19 +50,19 @@ const AnimatedCreateButton: React.FC<AnimatedCreateButtonProps> = ({
    Main Header Component
 ----------------------------------- */
 
-const Header: React.FC<HeaderProps> = ({
+const CommonHeader: React.FC<HeaderProps> = ({
   title,
-  headerText,
+  headertext,
+  addTextBtn,
   showCreateButton = true,
   onCreateClick,
-  addButtonText
 }) => {
   const router = useRouter();
   return (
     <>
       {/* Top Navigation Bar */}
-      <AppHeader
-        navTab={`${headerText}`}
+      <CommonAppHeader
+        navTab={`${headertext}`}
         onLogout={() => {
           console.log("logout");
         }}
@@ -74,11 +73,16 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold text-gray-900">{title}</h2>
 
-          {/* {showCreateButton && <AnimatedCreateButton onClick={onCreateClick} addButtonText={addButtonText}/>} */}
+          {showCreateButton && (
+            <AnimatedCreateButton
+              onClick={onCreateClick}
+              addTextBtn={addTextBtn}
+            />
+          )}
         </div>
       </header>
     </>
   );
 };
 
-export default Header;
+export default CommonHeader;

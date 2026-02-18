@@ -40,7 +40,7 @@ export default function DashboardPage() {
               color: "gray",
             }}
           ></span>
-          <h3 className="hidden sm:flex mx-2 items-center text-gray-600 text-sm">
+          <h3 onClick={() => router.push("/dashboard")} className="hidden sm:flex mx-2 items-center text-gray-600 text-sm cursor-pointer">
             Home
           </h3>
         </div>
@@ -510,31 +510,31 @@ export default function DashboardPage() {
                 </div>
                 <div className="grow overflow-y-auto pr-2 custom-scrollbar">
                   <ul>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-box mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">AQl Forms</h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         All Quality Check Forms
                       </h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Quality Report</h6>
                     </li>
-                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group active-bullet p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-[#657BE3] group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">Rework</h6>
                     </li>
-                    <li className="menu-item group p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-globe mr-2 text-sm transition-colors text-grey-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         Fabric Inspection Report
                       </h6>
                     </li>
-                    <li className="menu-item group last-child p-2 rounded-md transition-colors hover:bg-blue-500 hover:text-white">
+                    <li className="menu-item group last-child p-2 rounded-md transition-colors hover:bg-[#657BE3] hover:text-white">
                       <span className="pi pi-building mr-2 text-sm transition-colors text-grey-500 group-hover:text-white"></span>
                       <h6 className="group-hover:text-white">
                         Inline Quality Audit Report

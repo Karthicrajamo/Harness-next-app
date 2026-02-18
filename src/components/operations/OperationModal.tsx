@@ -288,7 +288,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
     disabled={isDisabled}
     rows={2}
     placeholder=" "
-    className="peer w-full border border-blue-600 rounded-md px-3 pt-4 pb-2 text-xs resize-none focus:outline-none focus:ring-0 disabled:bg-gray-50"
+    className="peer w-full border border-blue-400 rounded-md px-3 pt-4 pb-2 text-xs resize-none focus:outline-none focus:ring-0 disabled:bg-gray-50"
   />
   <label className="absolute left-2 top-2 bg-white px-1 text-xs text-blue-600 transition-all
     peer-placeholder-shown:top-3.5

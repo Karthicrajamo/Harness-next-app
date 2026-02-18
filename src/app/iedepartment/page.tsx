@@ -40,7 +40,7 @@ export default function DashboardPage() {
               color: "gray",
             }}
           ></span>
-          <h3 className="hidden sm:flex mx-2 items-center text-gray-600 text-sm">
+          <h3 onClick={() => router.push("/dashboard")} className="hidden sm:flex mx-2 items-center text-gray-600 text-sm cursor-pointer">
             Home
           </h3>
         </div>
@@ -72,7 +72,7 @@ export default function DashboardPage() {
             ></span>
           </h3>
           <span className="hidden sm:block text-sm font-bold text-black">
-            JJ Mills Bangladesh Pvt
+            JJ Mills Bangladesh Private Limited (Fabric)
           </span>
           {/* User Profile and Logout Dropdown (New Group/Hover structure) */}
           <div className="relative group">

@@ -6,16 +6,33 @@ import Image from "next/image";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [darkMode, setDarkMode] = useState(false);
 
-  // Initialize theme
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      const isDark =
+        localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches);
+      if (isDark) document.documentElement.classList.add("dark");
+      return isDark;
+    }
+    return false;
+  });
+
   useEffect(() => {
-    const isDark =
-      localStorage.getItem("theme") === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-    setDarkMode(isDark);
-    if (isDark) document.documentElement.classList.add("dark");
+    // Sync effect for theme changes from other tabs/windows
+    const handleStorageChange = () => {
+      const isDark = localStorage.getItem("theme") === "dark";
+      setDarkMode(isDark);
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const toggleDarkMode = () => {
@@ -80,7 +97,7 @@ export default function DashboardPage() {
           <span className="pi pi-bell text-gray-500 dark:text-gray-400 cursor-pointer"></span>
 
           <span className="hidden sm:block text-sm font-bold text-black dark:text-white">
-            JJ Mills Bangladesh Pvt
+            JJ Mills Bangladesh Private Limited (Fabric)
           </span>
 
           <div className="relative group">
@@ -159,7 +176,7 @@ export default function DashboardPage() {
 
         {/* 3. MAIN DISPLAY AREA */}
         <div className="w-full md:w-4/5 p-4 md:p-8 bg-[#3b83f60e] dark:bg-gray-950 transition-colors">
-        <div className="mb-8">
+          <div className="mb-8">
             <div className="flex items-center justify-between font-bold">
               <h1 className="text-sm font-bold text-[#3b82f6] tracking-wider">
                 RECENTLY USED
@@ -171,7 +188,10 @@ export default function DashboardPage() {
               <div className="border border-[#3b82f6]/30 rounded-md p-3 flex items-start">
                 <div className="flex items-center">
                   <span className="pi pi-globe mr-2 text-sm transition-colors text-blue-500 group-hover:text-white"></span>
-                  <h6 className="group-hover:text-white">
+                  <h6
+                    className="group-hover:text-white cursor-pointer"
+                    onClick={() => router.push("/bundle")}
+                  >
                     Cut Panel Bundle Audit
                   </h6>
                 </div>
@@ -213,22 +233,18 @@ export default function DashboardPage() {
                   </div>
                   <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
                     <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
-                      <i
-                        className="pi pi-file mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"
-                      ></i>
-                      <h6 className="font-medium">Daily Reports</h6>
+                      <i className="pi pi-file mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium cursor-pointer" onClick={() => router.push("/employeeDetails")}>Employee Details</h6>
                     </div>
                     <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
-                      <i
-                        className="pi pi-cog mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"
-                      ></i>
-                      <h6 className="font-medium">Operations Master</h6>
+                      <i className="pi pi-cog mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                      <h6 className="font-medium cursor-pointer" onClick={() => router.push("/list")}>Operations Master</h6>
                     </div>
-                  </div>
                   <div className="group flex items-center text-sm p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
-                      <i className="pi pi-box mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
-                      <h6 className="font-medium">Report</h6>
-                    </div>
+                    <i className="pi pi-box mr-3 text-blue-500 transition-colors duration-200 group-hover:text-white dark:text-blue-400"></i>
+                    <h6 className="font-medium">Report</h6>
+                  </div>
+                  </div>
                 </div>
               ))}
             </div>

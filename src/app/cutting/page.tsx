@@ -40,7 +40,10 @@ export default function DashboardPage() {
               color: "gray",
             }}
           ></span>
-          <h3 className="hidden sm:flex mx-2 items-center text-gray-600 text-sm">
+          <h3
+            onClick={() => router.push("/dashboard")}
+            className="hidden sm:flex mx-2 items-center text-gray-600 text-sm cursor-pointer"
+          >
             Home
           </h3>
         </div>
@@ -103,7 +106,7 @@ export default function DashboardPage() {
               <h1 className="text-sm font-bold text-[#3b82f6] mb-5 tracking-wider">
                 MODULES
               </h1>
-              
+
               <div className="relative group">
                 {/* MODULE BUTTON */}
                 <button

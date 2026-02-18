@@ -4,22 +4,22 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../components/ListLayout";
 import Header from "../../components/Header";
-import OperationTable from "../../components/operations/OperationTable";
-import OperationModal from "../../components/operations/OperationModal";
-import { OperationItem } from "../../data/operation";
-import { dummyOperations } from "../../data/dummyOperations";
+import OperationTable from "../../components/employeeDetails//OperationTable";
+import EmployeeModal from "../../components/employeeDetails/OperationModal";
+import { dummyEmployees } from "../../data/dummyEmployee";
+import { EmployeeItem } from "@/data/employee";
 
 const OperationListPage: React.FC = () => {
   const [operationData, setOperationData] =
-    useState<OperationItem[]>(dummyOperations);
+    useState<EmployeeItem[]>(dummyEmployees);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [editingItem, setEditingItem] = useState<OperationItem | null>(null);
+  const [editingItem, setEditingItem] = useState<EmployeeItem | null>(null);
   const [isViewOnly, setIsViewOnly] = useState<boolean>(false); // New state for View mode
 
   // --- Handlers for Actions ---
 
   const handleAddOrUpdateOperation = (
-    item: OperationItem,
+    item: EmployeeItem,
     isEditing: boolean,
   ) => {
     if (isEditing) {
@@ -40,13 +40,13 @@ const OperationListPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const openEditModal = (item: OperationItem) => {
+  const openEditModal = (item: EmployeeItem) => {
     setEditingItem(item);
     setIsViewOnly(false);
     setIsModalOpen(true);
   };
 
-  const openViewModal = (item: OperationItem) => {
+  const openViewModal = (item: EmployeeItem) => {
     setEditingItem(item);
     setIsViewOnly(true); // Disable editing in the modal
     setIsModalOpen(true);
@@ -60,7 +60,7 @@ const OperationListPage: React.FC = () => {
 
     if (window.confirm(confirmMessage)) {
       setOperationData((prev) =>
-        prev.filter((item: OperationItem) => !ids.includes(item.id)),
+        prev.filter((item: EmployeeItem) => !ids.includes(item.id)),
       );
     }
   };
@@ -68,7 +68,7 @@ const OperationListPage: React.FC = () => {
   return (
     <DashboardLayout>
       <div className="bg-blue-50 min-h-screen">
-        <Header title="Operation Master" headerText="Operation Master" onCreateClick={openAddModal} addButtonText={"Operation"}/>
+        <Header title="Employee Details" headerText="Employee Details" onCreateClick={openAddModal} addButtonText={"Employee"} />
 
         <div className="p-4">
           <OperationTable
@@ -79,7 +79,7 @@ const OperationListPage: React.FC = () => {
           />
         </div>
 
-        <OperationModal
+        <EmployeeModal
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);

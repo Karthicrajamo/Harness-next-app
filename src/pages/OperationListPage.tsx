@@ -50,8 +50,10 @@ const OperationListPage: React.FC = () => {
       {/* 1. RENDER THE HEADER, PASSING THE HANDLER */}
       <Header
         title="Operation List"
+        headerText="Operation List"
         showCreateButton={true}
         onCreateClick={handleCreateOperationClick} // <--- Passing the function here
+        addButtonText={"Operation"} // <--- Passing the button text here
       />
 
       <main className="p-4 md:p-6">

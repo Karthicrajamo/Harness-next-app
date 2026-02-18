@@ -16,6 +16,7 @@ import { FiDownload } from "react-icons/fi";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { QrPdf } from "./QrPdf";
 import QRCode from "qrcode";
+import { EmployeeItem } from "@/data/employee";
 
 /* =========================================================
    Debounce Hook
@@ -34,48 +35,60 @@ function useDebounce<T>(value: T, delay: number): T {
 /* =========================================================
    Types
 ========================================================= */
-export interface OperationItem {
-  id: string;
-  operationCode: string;
-  operation: string;
-  hindi: string;
-  tamil: string;
-  smv: number;
-  machineCode: string;
-  masterOperation: string;
-  skillGrade: string;
-  comments: string;
-}
+// export interface EmployeeItem {
+//   id: string;
+//   operationCode: string;
+//   operation: string;
+//   hindi: string;
+//   tamil: string;
+//   smv: number;
+//   machineCode: string;
+//   masterOperation: string;
+//   skillGrade: string;
+//   comments: string;
+// }
 
 type SortOrder = "asc" | "desc";
 
 /* =========================================================
    Mock Data
 ========================================================= */
-const MOCK_DATA: OperationItem[] = [
+const MOCK_DATA: EmployeeItem[] = [
   {
     id: "1",
-    operationCode: "OP-101",
-    operation: "Sew Pocket",
-    hindi: "जेब सिलना",
-    tamil: "பாக்கெட் தைக்க",
-    smv: 0.45,
-    machineCode: "SM",
-    masterOperation: "Assembly",
-    skillGrade: "A",
-    comments: "Standard pocket",
+    employeeNo: "1678945",
+    employeeName: "AARON",
+    dateOfBirth: "17-OCT-1990",
+    gender: "Male",
+    unit: "AAA",
+    department: "Finance",
+    designation: "Senior Product Manager",
+    category: "Contract",
+    type: "Staff",
+    grade: "Grade 4",
+    tier: "",
+    group1: "Sewing",
+    state: "",
+    lastUpdated: "04-JUL",
+    profilePercent: 84,
   },
   {
     id: "2",
-    operationCode: "OP-205",
-    operation: "Attach Collar",
-    hindi: "कॉलर जोड़ना",
-    tamil: "காலர் இணைக்கவும்",
-    smv: 1.1,
-    machineCode: "LH",
-    masterOperation: "Finishing",
-    skillGrade: "B",
-    comments: "Interlock required",
+    employeeNo: "21860",
+    employeeName: "AARON JEFF",
+    dateOfBirth: "19-SEP-1986",
+    gender: "Male",
+    unit: "rrr",
+    department: "Finance",
+    designation: "Support Engineer",
+    category: "Contract",
+    type: "",
+    grade: "",
+    tier: "",
+    group1: "",
+    state: "",
+    lastUpdated: "10-MAR",
+    profilePercent: 19,
   },
 ];
 
@@ -147,13 +160,13 @@ const OperationTable = ({
   onViewClick,
   onDeleteClick,
 }: {
-  initialData?: OperationItem[];
-  onEditClick: (item: OperationItem) => void;
-  onViewClick: (item: OperationItem) => void;
+  initialData?: EmployeeItem[];
+  onEditClick: (item: EmployeeItem) => void;
+  onViewClick: (item: EmployeeItem) => void;
   onDeleteClick: (ids: string[]) => void;
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState<keyof OperationItem>("operationCode");
+  const [sortBy, setSortBy] = useState<keyof EmployeeItem>("employeeNo");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [showQR, setShowQR] = useState(false);
@@ -166,56 +179,18 @@ const OperationTable = ({
 
   /** 🔹 NEW: column search state */
   const [columnFilters, setColumnFilters] = useState<
-    Partial<Record<keyof OperationItem, string>>
+    Partial<Record<keyof EmployeeItem, string>>
   >({});
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  //   const downloadQRPDF = async () => {
-  //     if (!qrRef.current) return;
-  //     console.log("pdf:::");
-
-  //     const canvas = await html2canvas(qrRef.current, {
-  //       scale: 2,
-  //       backgroundColor: "#ffffff",
-  //     });
-
-  //     const imgData = canvas.toDataURL("image/png");
-
-  //     const pdf = new jsPDF("p", "mm", "a4");
-
-  //     const pageWidth = pdf.internal.pageSize.getWidth();
-  //     const pageHeight = pdf.internal.pageSize.getHeight();
-
-  //     const imgWidth = pageWidth;
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  //     let heightLeft = imgHeight;
-  //     let position = 0;
-
-  //     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  //     heightLeft -= pageHeight;
-
-  //     while (heightLeft > 0) {
-  //       position -= pageHeight;
-  //       pdf.addPage();
-  //       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  //       heightLeft -= pageHeight;
-  //     }
-
-  //     pdf.save("operation-qrcodes.pdf");
-  //   };
-
-  /* =========================================================
-     Filtering (global + column)
-  ========================================================= */
   const dataFiltered = useMemo(() => {
     return initialData.filter((item) => {
       // Global search
       const globalMatch =
         !debouncedSearchTerm ||
         Object.values(item).some((val) =>
-          String(val).toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+          String(val).toLowerCase().includes(debouncedSearchTerm.toLowerCase()),
         );
 
       if (!globalMatch) return false;
@@ -223,7 +198,7 @@ const OperationTable = ({
       // Column-wise AND filter
       return Object.entries(columnFilters).every(([key, value]) => {
         if (!value) return true;
-        const cell = item[key as keyof OperationItem];
+        const cell = item[key as keyof EmployeeItem];
         return String(cell).toLowerCase().includes(value.toLowerCase());
       });
     });
@@ -249,7 +224,7 @@ const OperationTable = ({
     return sorted;
   }, [dataFiltered, sortBy, sortOrder]);
 
-  const toggleSort = (key: keyof OperationItem) => {
+  const toggleSort = (key: keyof EmployeeItem) => {
     if (key === sortBy) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -272,24 +247,26 @@ const OperationTable = ({
     (async () => {
       const images = await Promise.all(
         selectedRows.map(async (row) => {
-          const payload = JSON.stringify({
-            id: row.id,
-            operationCode: row.operationCode,
-            operation: row.operation,
-            machine: row.machineCode,
-            smv: row.smv,
-            skill: row.skillGrade,
-          });
+          const payload =
+            // JSON.stringify({
+            // id: row.id,
+            // employeeNo:
+            row.employeeNo;
+          // dateOfBirth: row.dateOfBirth,
+          // gender: row.gender,
+          // unit: row.unit,
+          // department: row.department,
+          // });
 
           return {
             id: row.id,
-            label: row.id,
+            label: row.employeeNo,
             src: await QRCode.toDataURL(payload, {
               width: 300,
               margin: 1,
             }),
           };
-        })
+        }),
       );
 
       setQrImages(images);
@@ -306,18 +283,24 @@ const OperationTable = ({
     return () => clearTimeout(timer);
   }, [qrImages]);
 
-  const headers: (keyof OperationItem | "actions" | "select")[] = [
+  const headers: (keyof EmployeeItem | "actions" | "select")[] = [
     "select",
-    "operationCode",
-    "operation",
-    "hindi",
-    "tamil",
-    "smv",
-    "machineCode",
-    "masterOperation",
-    "skillGrade",
-    "comments",
-    "actions",
+    "employeeNo",
+    "employeeName",
+    "dateOfBirth",
+    "gender",
+    "unit",
+    "department",
+    "designation",
+    "category",
+    "type",
+    "grade",
+    "tier",
+    "group1",
+    "state",
+    "lastUpdated",
+    "profilePercent",
+    // "actions",
   ];
 
   const formatHeader = (key: string) => {
@@ -342,8 +325,8 @@ const OperationTable = ({
         qrImages={qrImages}
       />
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 text-xs">
+      <div className="max-h-[70vh] overflow-y-auto border border-gray-200">
+        <table className="min-w-full border-collapse text-xs">
           <thead className="bg-gray-50">
             {/* HEADER ROW */}
             <tr>
@@ -387,12 +370,12 @@ const OperationTable = ({
                       className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
                     />
                   </th>
-                )
+                ),
               )}
             </tr>
           </thead>
 
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-200 ">
             {dataSorted.map((item) => (
               <tr key={item.id} className="hover:bg-gray-50 text-black">
                 {headers.map((key) => {
@@ -453,7 +436,10 @@ const OperationTable = ({
 
                   return (
                     <td key={key} className="px-3 py-2">
-                      {key === "smv" ? item.smv.toFixed(2) : item[key]}
+                      {
+                        // key === "smv" ? item.smv.toFixed(2) :
+                        item[key]
+                      }
                     </td>
                   );
                 })}
@@ -515,11 +501,11 @@ const OperationTable = ({
               {selectedRows.map((row) => {
                 const qrPayload = JSON.stringify({
                   id: row.id,
-                  operationCode: row.operationCode,
-                  operation: row.operation,
-                  machine: row.machineCode,
-                  smv: row.smv,
-                  skill: row.skillGrade,
+                  employeeNo: row.employeeNo,
+                  dateOfBirth: row.dateOfBirth,
+                  gender: row.gender,
+                  unit: row.unit,
+                  department: row.department,
                 });
 
                 return (
@@ -535,11 +521,11 @@ const OperationTable = ({
                     />
 
                     <div className="mt-2 text-center font-medium">
-                      {row.operationCode}
+                      {row.employeeNo}
                     </div>
 
                     <div className="text-gray-500 text-[10px]">
-                      {row.operation}
+                      {row.employeeName}
                     </div>
                   </div>
                 );
