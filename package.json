@@ -11,17 +11,21 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.10.0",
     "axios": "^1.13.1",
+    "firebase": "^12.8.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.24",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.555.0",
     "next": "16.0.1",
+    "next-auth": "^4.24.13",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.7",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.12.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
