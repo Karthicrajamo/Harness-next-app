@@ -99,7 +99,7 @@ export default function Login() {
               <i className="pi pi-lock absolute inset-0 flex items-center justify-center text-blue-500 text-2xl"></i>
             </div>
             <p className="text-gray-700 font-medium text-lg mb-2">
-              Authenticating...
+              Authenticating.....
             </p>
             <p className="text-gray-500 text-sm">Please wait ...</p>
           </div>
