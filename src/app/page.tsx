@@ -64,7 +64,8 @@
 //   );
 // }
 import React from "react";
-import Login from "./module/AuthModule/Login/Login";
+import Login from "./login/page";
+
 const Home = () => {
   return <Login />;
 };
