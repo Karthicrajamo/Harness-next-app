@@ -74,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold text-gray-900">{title}</h2>
 
-          {/* {showCreateButton && <AnimatedCreateButton onClick={onCreateClick} addButtonText={addButtonText}/>} */}
+          {showCreateButton && <AnimatedCreateButton onClick={onCreateClick} addButtonText={addButtonText}/>}
         </div>
       </header>
     </>

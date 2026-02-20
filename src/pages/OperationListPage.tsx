@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header"; // Adjust path as needed
 import OperationTable from "../components/operations/OperationTable"; // Adjust path as needed
+import { serverApi } from "@/lib/serverApi";
 
 // Define a placeholder component for the creation form/modal
 const OperationCreationModal: React.FC<{ onClose: () => void }> = ({
@@ -29,7 +30,7 @@ const OperationListPage: React.FC = () => {
   // State to control the visibility of the creation modal
   const [isCreationModalOpen, setIsCreationModalOpen] =
     useState<boolean>(false);
-
+  const [tamilData, setTamilData] = useState<any>(null); 
   // NOTE: You would typically fetch the initialData here and pass it to OperationTable
   // We are using the mock data included in OperationTable for this example.
 
@@ -44,7 +45,51 @@ const OperationListPage: React.FC = () => {
     // Add logic here to refresh the table data if a new item was saved
     console.log("Creation process completed/cancelled.");
   };
+  useEffect(() => {
+    setTamilData(fetchTamilData());
+  }, []);
+   const fetchTamilData = async () => {
+    try {
+      const api = serverApi();
+      console.log(api.defaults.baseURL);
 
+      const token =
+        "eyJhbGciOiJIUzI1NiJ9.eyJjb21wYW55SWQiOjEsInJvbGUiOlsiUk9MRV9BRE1JTklTVFJBVE9SIl0sImNvbXBhbnlOYW1lIjoiSmF5IEpheSBNaWxscyAoQmFuZ2xhZGVzaCkgUHJpdmF0ZSBMaW1pdGVkIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NzE0OTY3NzQsImV4cCI6MTc3MTUwNzU3NH0.paa6kyQ5fKL9FJbmTBCIL0UeOLgIrho6tsdnpVUjfiw";
+
+      const response = await api.post(
+        "/api/common/execute-select",
+        {
+          query: `
+          SELECT language_field_name
+          FROM language_lable_details
+          WHERE field_category = 'Label'
+            AND language_id = (
+              SELECT language_id
+              FROM language_master
+              WHERE language_name = (
+                SELECT secondary_language FROM hr_configuration
+              )
+            )
+        `,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      console.log("Tamil Data:", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error(
+        "Error fetching Tamil data:",
+        error.response?.data || error.message,
+      );
+      throw error;
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 1. RENDER THE HEADER, PASSING THE HANDLER */}

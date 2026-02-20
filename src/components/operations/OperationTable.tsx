@@ -16,6 +16,7 @@ import { FiDownload } from "react-icons/fi";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { QrPdf } from "./QrPdf";
 import QRCode from "qrcode";
+import { tData } from "@/app/list/page";
 
 /* =========================================================
    Debounce Hook
@@ -146,11 +147,13 @@ const OperationTable = ({
   onEditClick,
   onViewClick,
   onDeleteClick,
+  tamilData,
 }: {
   initialData?: OperationItem[];
   onEditClick: (item: OperationItem) => void;
   onViewClick: (item: OperationItem) => void;
   onDeleteClick: (ids: string[]) => void;
+  tamilData?: any; // New prop to receive Tamil data
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<keyof OperationItem>("operationCode");
@@ -215,7 +218,7 @@ const OperationTable = ({
       const globalMatch =
         !debouncedSearchTerm ||
         Object.values(item).some((val) =>
-          String(val).toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+          String(val).toLowerCase().includes(debouncedSearchTerm.toLowerCase()),
         );
 
       if (!globalMatch) return false;
@@ -270,31 +273,45 @@ const OperationTable = ({
     if (!showQR || selectedRows.length === 0) return;
 
     (async () => {
+      // Ensure tamilData is an array (it may be an object with a `data` property)
+      console.log(tData, "--tamilData source for QR labels:");
+      const source = Array.isArray(tData) ? tData : tData;
+
+      // Generate QR images for each selected row. Try to attach a Tamil label
+      // from `source` by index when available. Use the row.id as the image id
+      // so lookups later (by row.id) work correctly.
+      console.log(source, "tamilData source for QR labels:");
+
       const images = await Promise.all(
-        selectedRows.map(async (row) => {
+        selectedRows.map(async (row: any, idx: number) => {
+          const tamilLabel = source[idx]?.HINDI ?? "";
+          const tamilLabel2 = source[idx]?.TAMIL ?? "";
+          const tamilLabel3 = source[idx]?.BENGALI ?? "";
           const payload = JSON.stringify({
             id: row.id,
             operationCode: row.operationCode,
             operation: row.operation,
-            machine: row.machineCode,
-            smv: row.smv,
-            skill: row.skillGrade,
+            tamilLabel,
+            tamilLabel2,
+            tamilLabel3,
           });
 
           return {
             id: row.id,
-            label: row.id,
+            label: tamilLabel || row.operation,
+            label2: tamilLabel2 || row.operation,
+            label3: tamilLabel3 || row.operation,
             src: await QRCode.toDataURL(payload, {
               width: 300,
               margin: 1,
             }),
           };
-        })
+        }),
       );
 
       setQrImages(images);
     })();
-  }, [showQR, selectedRows]);
+  }, [showQR, selectedRows, tamilData]);
 
   useEffect(() => {
     if (qrImages.length === 0) return;
@@ -387,7 +404,7 @@ const OperationTable = ({
                       className="w-full border border-gray-300 rounded px-2 py-1 text-xs"
                     />
                   </th>
-                )
+                ),
               )}
             </tr>
           </thead>

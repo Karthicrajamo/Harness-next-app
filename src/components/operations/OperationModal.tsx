@@ -280,7 +280,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-xs resize-none disabled:bg-gray-50"
             ></textarea>
           </div>
-<div className="relative">
+{/* <div className="relative">
   <textarea
     name="comments"
     value={formData.comments}
@@ -297,7 +297,7 @@ const OperationModal: React.FC<OperationModalProps> = ({
     peer-focus:text-blue-600">
     Comments
   </label>
-</div>
+</div> */}
           {/* Action Buttons */}
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-100">
             <button
