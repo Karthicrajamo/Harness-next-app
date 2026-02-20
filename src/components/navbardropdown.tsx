@@ -3,7 +3,7 @@ export default function NavBarDropDown({
   label,
   onClick,
   iconClass = "text-gray-700",
-  labelClass = "text-sm font-sm",
+  labelClass = "text-xs font-xs",
   size = 20,
 }) {
   return (

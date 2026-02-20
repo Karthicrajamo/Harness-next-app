@@ -3,9 +3,14 @@
 import { useState, useEffect, JSX } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-
-
-import { Clipboard, ClipboardCheck, Home, ScissorsIcon, Settings, Users2 } from "lucide-react";
+import {
+  Clipboard,
+  ClipboardCheck,
+  Home,
+  ScissorsIcon,
+  Settings,
+  Users2,
+} from "lucide-react";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -53,16 +58,16 @@ export default function Sidebar({ collapsed }: SidebarProps) {
   ];
 
   const iconMap: Record<string, JSX.Element> = {
-     DASHBOARD: <Home className="w-6 h-6 text-black" />,
-    "CUTTING MODULES": <ScissorsIcon className="w-6 h-6 text-black" />,
-     "IE DEPARTMENTS": <Users2 className="w-6 h-6 text-black" />,
-     "QUALITY MODULES": <Clipboard className="w-6 h-6 text-black" />,
-     "OPERATION MASTER": <Settings className="w-6 h-6 text-[#2196f3]" />,
+    DASHBOARD: <Home className="w-4 h-4 text-black" />,
+    "CUTTING MODULES": <ScissorsIcon className="w-4 h-4 text-black" />,
+    "IE DEPARTMENTS": <Users2 className="w-4 h-4 text-black" />,
+    "QUALITY MODULES": <Clipboard className="w-4 h-4 text-black" />,
+    "OPERATION MASTER": <Settings className="w-4 h-4 text-[#2196f3]" />,
   };
 
   useEffect(() => {
     const activeMenu = menuItems.find((item) =>
-      item.subMenu?.some((sub) => sub.path === pathname)
+      item.subMenu?.some((sub) => sub.path === pathname),
     );
     if (activeMenu) setOpenSubMenu(activeMenu.label);
   }, [pathname]);
@@ -78,24 +83,30 @@ export default function Sidebar({ collapsed }: SidebarProps) {
 
   return (
     <aside
-      className={`
-        fixed left-0 top-0 mt-20 h-[calc(100vh-4rem)]
-     ${collapsed ? "w-20 block" : "hidden"}
-    text-gray-200 border-r bg-white shadow-xl
-      `}
-    >
+  className={`
+    fixed left-0 top-0
+    mt-24 md:mt-14
+    h-[calc(100vh-6rem)] md:h-[calc(100vh-3.5rem)]
+    ${collapsed ? "w-52 block" : "hidden"}
+    bg-white border-r border-r-gray-100 shadow-xl
+    transition-all duration-300
+  `}
+>
       <ul className="mt-4 px-2 relative">
         {menuItems.map((item) => {
           const isOpen = openSubMenu === item.label;
 
           return (
-            <li key={item.label} className="relative mx-2 my-2 border-b border-b-gray-100">
+            <li
+              key={item.label}
+              className="relative mx-2 my-2 border-b border-b-gray-100"
+            >
               {/* Parent Menu */}
               <button
                 onClick={() => handleLinkClick(item.path, item.label)}
                 className={`
-                  flex items-center w-full px-3 py-2 rounded-lg
-                  transition-all duration-200
+                  flex  w-full px-3 py-2 rounded-lg
+                  transition-all duration-200 
                   ${
                     pathname === item.path
                       ? "bg-blue-100 text-white border-l-4 border-[#2196f3] border-b-1"
@@ -103,14 +114,10 @@ export default function Sidebar({ collapsed }: SidebarProps) {
                   }
                 `}
               >
-                <div
-                  className={`flex items-center gap-3 ${
-                    collapsed ? "justify-center w-full" : ""
-                  }`}
-                >
+                <div className={`flex  gap-3 ${collapsed ? " w-full" : ""}`}>
                   {iconMap[item.label]}
-                  {!collapsed && (
-                    <span className="text-sm font-semibold text-black">
+                  {collapsed && (
+                    <span className="text-xs font-semibold text-black">
                       {item.label}
                     </span>
                   )}
@@ -118,7 +125,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
               </button>
 
               {/* Submenu Card */}
-              { item.subMenu && (
+              {item.subMenu && (
                 <div
                   className={`
                     absolute left-full top-0 ml-2 w-64
@@ -130,7 +137,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
                 >
                   {/* Card Title */}
                   <div className="px-4 py-3">
-                    <p className="text-sm font-semibold  text-[#2196f3]">
+                    <p className="text-xs font-semibold  text-[#2196f3]">
                       {item.label}
                     </p>
                   </div>
@@ -142,7 +149,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
                         <button
                           onClick={() => handleLinkClick(sub.path)}
                           className={`
-                            w-full text-left px-3 py-2 rounded-md text-sm
+                            w-full text-left px-3 py-2 rounded-md text-xs
                             transition-colors cursor-pointer border-b border-b-gray-100
                             ${
                               pathname === sub.path

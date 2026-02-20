@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Sidebar from "@/components/sidebar";
 import Navbar from "@/components/navbar";
 
-
 interface DashboardLayoutProps {
   children: ReactNode;
 }
@@ -17,14 +16,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter();
 
   const handleLogoutClick = () => {
-    console.log("Logout clicked")
+    console.log("Logout clicked");
     localStorage.removeItem("login");
-    router.push("/login"); 
+    router.push("/login");
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-
       <Navbar
         collapsed={collapsed}
         setCollapsed={setCollapsed}
@@ -35,13 +33,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       <div className="flex flex-1">
         <Sidebar collapsed={collapsed} />
-      <main
-  className={`flex-1 p-6 mt-18 transition-all duration-300 ${
-    collapsed ? "ml-16" : null
-  } bg-[#3b83f6]/5`}
->
-  {children}
-</main>
+        <main
+          className={`flex-1 p-6 mt-14 transition-all duration-300 ${
+            collapsed ? "ml-50" : null
+          } bg-[#3b83f6]/5`}
+        >
+          {children}
+        </main>
       </div>
       {showLogoutConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">

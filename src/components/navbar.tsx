@@ -58,7 +58,7 @@ export default function Navbar({
     { icon: Bell, label: "Notification", iconClass: "text-[#2196f3]" },
     { icon: LogOut, label: "Logout", iconClass: "text-red-600", onClick:{handleLogout}},
     { icon: Settings, label: "Settings", iconClass: "text-[#2196f3]" },
-    { icon: UserIcon, label: "Profile" },
+    { icon: UserIcon, label: "Profile", text:'M' },
     { icon: Moon, label: "Dark Mode" },
   ];
 
@@ -67,10 +67,9 @@ export default function Navbar({
   return (
     <>
       <div className="fixed top-0 left-0 w-full bg-white text-black shadow-lg z-50">
-        <div className="py-3 px-4 flex items-center justify-between">
+        <div className=" flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="p-1 rounded-md cursor-pointer transition-all">
-              {/* <AlignLeft size={24} className="text-[#2196f3] mx-2" onClick={() => setCollapsed(!collapsed)}/> */}
               <img
                 src="/assets/group-454.jpg"
                 className="w-12 h-12"
@@ -78,7 +77,7 @@ export default function Navbar({
                 onClick={() => setCollapsed(!collapsed)}
               />
             </div>
-            <h1 className="text-blue-500 text-sm sm:text-base md:text-lg font-semibold">
+            <h1 className="text-blue-500 text-sm sm:text-base md:text-sm font-semibold">
               Harness ERP
             </h1>
           </div>
@@ -86,7 +85,7 @@ export default function Navbar({
             <div className="hidden sm:flex items-center space-x-4 relative">
               <SearchBar />
 
-              <span className="hidden md:block text-sm font-semibold text-gray-700">
+              <span className="hidden md:block text-xs font-semibold text-gray-700">
                 JJ Mills Bangladesh Private Limited (Fabric)
               </span>
 
@@ -98,7 +97,7 @@ export default function Navbar({
                     }
                   }}
                 >
-                  <UserIcon size={34} />
+                  <UserIcon size={28} />
                 </button>
 
                 {/* user dropdown */}
@@ -114,7 +113,7 @@ export default function Navbar({
                       <NavBarDropDown
                         key={index}
                         icon={item.icon}
-                        labelClass={"text-sm font-semibold"}
+                        labelClass={"text-xs font-semibold"}
                         label={item.label}
                         onClick={item.onClick}
                         iconClass={item.iconClass}
