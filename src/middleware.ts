@@ -14,14 +14,14 @@ export function middleware(request: NextRequest) {
     console.log("token>>", token);
 
     if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     try {
       //   jwt.verify(token, process.env.JWT_SECRET!);
       return NextResponse.next();
     } catch {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 

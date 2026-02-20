@@ -99,7 +99,7 @@ export async function POST(req: Request) {
     const res = NextResponse.json({
       success: true,
       message: "Login successful",
-      user: backendResponse.data?.user || null,
+      user: backendResponse.data || null,
     });
 
     res.cookies.set("token", authToken, {
