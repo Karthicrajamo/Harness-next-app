@@ -29,11 +29,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import reducers from "./mainReducers";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // localStorage
+import storage from "redux-persist/lib/storage"; 
 
 const RESET_STORE_ACTION_TYPE = "main/RESET_APP_STATE";
 
 const combinedReducer = combineReducers(reducers);
+export type RootState = ReturnType<typeof combinedReducer>;
 
 const rootReducer = (state: any, action: any) => {
   if (action.type === RESET_STORE_ACTION_TYPE) {
@@ -45,7 +46,7 @@ const rootReducer = (state: any, action: any) => {
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["authSlice"], // 👈 only persist auth
+  whitelist: ["authSlice"], 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

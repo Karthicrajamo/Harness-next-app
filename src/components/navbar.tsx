@@ -10,14 +10,16 @@ import {
   Moon,
   AlignLeft,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SearchBar from "./searchbar";
 import NavBarDropDown from "./navbardropdown";
 import UserIcon from "./usericon";
-import { useDispatch } from "react-redux";
-import { AppDispatch, resetStore } from "@/redux/mainStore";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, resetStore, RootState } from "@/redux/mainStore";
 import { logout } from "@/features/slice/auth/authSlice";
 import { useRouter } from "next/navigation";
+
+import Popup from "./popup";
 
 interface NavbarProps {
   collapsed: boolean;
@@ -35,34 +37,66 @@ export default function Navbar({
 }: NavbarProps) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const user = useSelector((state: RootState) => state.authSlice.user);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-
+  const [openPopup, setOpenPopup] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (showLogoutConfirm) {
       setUserMenuOpen(false);
       setMenuOpen(false);
     }
   }, [showLogoutConfirm]);
-
-   const handleLogout = async () => {
+  const handleOpenPopup = () => {
+    setUserMenuOpen(false);
+    setMenuOpen(false);
+    setOpenPopup(true);
+  };
+  const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
-
-    dispatch(logout()); // clear slice state
+    setOpenPopup(false);
+    // dispatch(logout()); // clear slice state
     resetStore(); // clear persisted state
-
     router.push("/");
   };
 
+  useEffect(() => {
+    if (!userMenuOpen && !menuOpen) return;
+
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setUserMenuOpen(false);
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [userMenuOpen, menuOpen]);
   const menuItems = [
     { icon: Bell, label: "Notification", iconClass: "text-[#2196f3]" },
-    { icon: LogOut, label: "Logout", iconClass: "text-red-600", onClick:{handleLogout}},
+    {
+      icon: LogOut,
+      label: "Logout",
+      iconClass: "text-red-600",
+      onClick: handleOpenPopup,
+    },
     { icon: Settings, label: "Settings", iconClass: "text-[#2196f3]" },
-    { icon: UserIcon, label: "Profile", text:'M' },
+   
+    {
+      icon: UserIcon,
+      label: user?.userName,
+      text: user?.userName.charAt(0)?.toUpperCase(),
+    },
     { icon: Moon, label: "Dark Mode" },
   ];
-
- 
 
   return (
     <>
@@ -89,7 +123,7 @@ export default function Navbar({
                 JJ Mills Bangladesh Private Limited (Fabric)
               </span>
 
-              <div className="relative">
+              <div ref={dropdownRef} className="relative">
                 <button
                   onClick={() => {
                     if (!showLogoutConfirm) {
@@ -97,7 +131,13 @@ export default function Navbar({
                     }
                   }}
                 >
-                  <UserIcon size={28} />
+              
+                  <UserIcon
+                    size={34}
+                    text={
+                      user?.userName?.charAt(0)?.toUpperCase() || "djhasjdja"
+                    }
+                  />
                 </button>
 
                 {/* user dropdown */}
@@ -154,6 +194,13 @@ export default function Navbar({
               ))}
             </div>
           </div>
+        )}
+        {openPopup && (
+          <Popup
+            text={"Are you sure you want to logout?"}
+            setOpenPopup={setOpenPopup}
+            handleLogout={handleLogout}
+          />
         )}
       </div>
     </>
