@@ -9,6 +9,7 @@ import {
   Sun,
   Moon,
   AlignLeft,
+  KeyRound,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import SearchBar from "./searchbar";
@@ -81,6 +82,7 @@ export default function Navbar({
     };
   }, [userMenuOpen, menuOpen]);
   const menuItems = [
+    { icon: KeyRound, label: "Reset Password", iconClass: "text-[#2196f3]" },
     { icon: Bell, label: "Notification", iconClass: "text-[#2196f3]" },
     {
       icon: LogOut,
@@ -89,12 +91,12 @@ export default function Navbar({
       onClick: handleOpenPopup,
     },
     { icon: Settings, label: "Settings", iconClass: "text-[#2196f3]" },
-   
-    {
-      icon: UserIcon,
-      label: user?.userName,
-      text: user?.userName.charAt(0)?.toUpperCase(),
-    },
+
+    // {
+    //   icon: UserIcon,
+    //   label: user?.userName,
+    //   text: user?.userName.charAt(0)?.toUpperCase(),
+    // },
     { icon: Moon, label: "Dark Mode" },
   ];
 
@@ -131,7 +133,6 @@ export default function Navbar({
                     }
                   }}
                 >
-              
                   <UserIcon
                     size={34}
                     text={
@@ -149,6 +150,23 @@ export default function Navbar({
                   border border-gray-200 
                   p-2 z-[999]"
                   >
+                    <div className="px-3 mb-2 border-b border-b-gray-100">
+                      <div className="flex gap-2 items-start">
+                        <UserIcon size={30} />
+
+                        <div className="flex flex-col">
+                          <span className="text-xs font-semibold">
+                            {user?.userName}
+                          </span>
+                          <span className="text-[11px] text-gray-500">
+                            Executive Manager
+                          </span>
+                          <span className="text-[11px] text-gray-500">
+                            admin@gmail.com
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     {menuItems.map((item, index) => (
                       <NavBarDropDown
                         key={index}
@@ -181,8 +199,26 @@ export default function Navbar({
         </div>
 
         {/* for mobile view */}
+
         {menuOpen && (
           <div className="sm:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-t-gray-200 z-[999]">
+            <div className="px-3 m-2 border-b border-b-gray-100">
+              <div className="flex gap-2 items-start">
+                <UserIcon size={30} />
+
+                <div className="flex flex-col">
+                  <span className="text-xs font-semibold">
+                    {user?.userName}
+                  </span>
+                  <span className="text-[11px] text-gray-500">
+                    Executive Manager
+                  </span>
+                  <span className="text-[11px] text-gray-500">
+                    admin@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
             <div className="flex flex-col p-2">
               {menuItems.map((item, index) => (
                 <NavBarDropDown
