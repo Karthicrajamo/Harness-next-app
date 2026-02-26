@@ -36,23 +36,24 @@ export default function Dashboard() {
       </div>
 
       <div className="px-4 py-8 bg-white dark:bg-gray-700">
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {Object.entries(dashboardData).map(([department, modules]) => (
-        <div
-          key={department}
-          className="mb-4 p-4 rounded-xl border border-gray-200 dark:border-gray-600"
-        >
-          <h2 className="font-semibold text-gray-700 dark:text-white mb-2">
-            {department}
-          </h2>
-          <ul className="list-disc ml-6 text-gray-600 dark:text-gray-300 text-sm">
-            {modules.map((module) => (
-              <li key={module.module_id}>{module.module_name}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+        {!dashboardData ? (
+          <p className="text-gray-400 dark:text-gray-300 text-[15px] text-center">
+            No recent tabs yet
+          </p>
+        ) : (
+          Object.entries(dashboardData).map(([department, modules]) => (
+            <div key={department} className="mb-4">
+              <h2 className="font-semibold text-gray-700 dark:text-white mb-2">
+                {department}
+              </h2>
+              <ul className="list-disc ml-6 text-gray-600 dark:text-gray-300 text-sm">
+                {modules.map((module) => (
+                  <li key={module.module_id}>{module.module_name}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
