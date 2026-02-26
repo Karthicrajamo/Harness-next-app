@@ -1,10 +1,11 @@
 import { RootState } from "@/redux/mainStore";
 import { useSelector } from "react-redux";
+import "./sidebar.css"
 
 export default function UserIcon({
   size = 24,
   text = "ssdhka",
-  bgColor = "bg-orange-400",
+  bgColor = "my-card-gradient",
 }) {
   const user = useSelector((state: RootState) => state.authSlice.user);
   return (

@@ -65,12 +65,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   LoginMiddleWare,
+  OperationMasterMiddlware,
   ResetPasswordMiddleWare,
 } from "@/features/Thunks/auth/authThunks";
 
 interface AuthState {
   token: string | null;
   user: any | null;
+  operationData: any | null;
   loading: boolean;
   error: string | null;
 }
@@ -78,6 +80,7 @@ interface AuthState {
 const initialState: AuthState = {
   token: null,
   user: null,
+  operationData: null,
   loading: false,
   error: null,
 };
@@ -115,6 +118,17 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(ResetPasswordMiddleWare.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Reset Password failed";
+      })
+      .addCase(OperationMasterMiddlware.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(OperationMasterMiddlware.fulfilled, (state, action) => {
+        state.loading = false;
+        state.operationData = action.payload;
+      })
+      .addCase(OperationMasterMiddlware.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Reset Password failed";
       });

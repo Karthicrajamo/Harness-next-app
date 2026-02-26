@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { LOGIN, RESETPASSWORD } from "@/redux/actionTypes";
+import { LOGIN, OPERATION, RESETPASSWORD } from "@/redux/actionTypes";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { APIROUTES } from "@/lib/apiRoutes";
@@ -50,7 +50,7 @@ export const LoginMiddleWare = createAsyncThunk<
         payload,
       );
       console.log("Login response:", data);
-  
+
       return data;
     } catch (error: any) {
       console.error("Login Error:", error);
@@ -82,5 +82,30 @@ export const ResetPasswordMiddleWare = createAsyncThunk<
     }
 
     return rejectWithValue("Login failed");
+  }
+});
+
+export const OperationMasterMiddlware = createAsyncThunk<
+  ApiResponse,
+  void,
+  { rejectValue: string }
+>(OPERATION, async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await axios.post<ApiResponse>(
+      APIROUTES.LOGIN.OPERATION_MASTER,
+      {
+        query: "select * from OPERATION_MASTER",
+      },
+    );
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue(
+        error.response?.data?.message ?? "Operation Master failed",
+      );
+    }
+
+    return rejectWithValue("Operation Master failed");
   }
 });

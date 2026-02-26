@@ -1,0 +1,100 @@
+// import { APIROUTES } from "@/lib/apiRoutes";
+// import { DASHBOARD } from "@/redux/actionTypes";
+// import { createAsyncThunk } from "@reduxjs/toolkit";
+// import axios from "axios";
+// import { data } from "./data";
+// import { DashboardData } from "@/features/slice/dashboard/dashboardSlice";
+
+// export const dashboardMiddleware = createAsyncThunk<
+//   DashboardData[],
+//   void,
+//   { rejectValue: string }
+// >(DASHBOARD, async (_, { rejectWithValue }) => {
+//   try {
+//     const normalizedData: DashboardData[] = data.map((item) => ({
+//       QUALITY: item.QUALITY.map((m) => ({
+//         module_id: m.module_id,
+//         module_name: m.module_name,
+//       })),
+//       IE_DEPARTMENT: item.IE_DEPARTMENT.map((m) => ({
+//         module_id: m.module_id,
+//         module_name: m.module_name,
+//       })),
+//       CUTTING: item.CUTTING.map((m) => ({
+//         module_id: m.module_id,
+//         module_name: m.module_name,
+//       })),
+//     }));
+
+//     return normalizedData;
+//   } catch (error) {
+//     return rejectWithValue("Error loading dashboard data");
+//   }
+// });
+
+// features/Thunks/dashboard/dashboardThunk.ts
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { DASHBOARD } from "@/redux/actionTypes";
+import { DashboardData } from "@/features/slice/dashboard/dashboardSlice";
+
+export const dashboardMiddleware = createAsyncThunk<
+  DashboardData,
+  void,
+  { rejectValue: string }
+>(DASHBOARD, async (_, { rejectWithValue }) => {
+  try {
+    const data: DashboardData = {
+      QUALITY: [
+        { module_id: 1, module_name: "AQL Forms" },
+        { module_id: 2, module_name: "All Quality Check Form" },
+        { module_id: 3, module_name: "Quality Reports" },
+        { module_id: 4, module_name: "Fabric Inspection Forms" },
+        { module_id: 5, module_name: "Fabric Inspection Report" },
+        { module_id: 6, module_name: "Fabric Inspection Entry Report" },
+        { module_id: 7, module_name: "Rework" },
+        { module_id: 8, module_name: "Mills Fabric Parameter Forms & Reports" },
+        { module_id: 9, module_name: "Fabric Inspection Miles/Suppiler" },
+        { module_id: 10, module_name: "EDI Fabric Inspection Forms" },
+        { module_id: 11, module_name: "Fabric Inspection Comparison Report" },
+        { module_id: 12, module_name: "Needle Received Stock" },
+        { module_id: 13, module_name: "Needle Controlled Log" },
+        { module_id: 14, module_name: "IDLE Needle Issue/Recieve Details" },
+        { module_id: 15, module_name: "Needle Reports" },
+        { module_id: 16, module_name: "Needle Reports View" },
+        { module_id: 17, module_name: "Fabric Inspection Adishtam" },
+        { module_id: 18, module_name: "Adhistam Fabric Inspection Report" },
+        { module_id: 19, module_name: "Inline Quality Audit Report" },
+        { module_id: 20, module_name: "Fabric Lab Inspection" },
+      ],
+      IE_DEPARTMENT: [
+        { module_id: 1, module_name: "System Operation" },
+        { module_id: 2, module_name: "Operation Master" },
+        { module_id: 3, module_name: "Operation Report and Modification" },
+        { module_id: 4, module_name: "Daily ForeCast Report" },
+        { module_id: 5, module_name: "Operator wise Hourly Production Reports" },
+        { module_id: 6, module_name: "QR Operation Reports" },
+        { module_id: 7, module_name: "ForeCast Order" },
+        { module_id: 8, module_name: "ManPower Lost Time" },
+      ],
+      CUTTING: [
+        { module_id: 1, module_name: "OPSEQ" },
+        { module_id: 2, module_name: "Operation Mapping" },
+        { module_id: 3, module_name: "Bundle Operation" },
+        { module_id: 4, module_name: "QR Code Building Reports" },
+        { module_id: 5, module_name: "Cut Panel Bundle Audit" },
+        { module_id: 6, module_name: "Style System Id Tracking" },
+        { module_id: 7, module_name: "Daily Cutting CPI" },
+        { module_id: 8, module_name: "CPI QR Code Building Report" },
+        { module_id: 9, module_name: "Print & Embroidery QR Gen Reports" },
+        { module_id: 10, module_name: "Print & Embroidery CPI QR Gen Uploader" },
+        { module_id: 11, module_name: "Print & Embroidery CPI QR Gen Reports" },
+        { module_id: 12, module_name: "Cutting Panel Audit Report" },
+        { module_id: 13, module_name: "QC Rework Operation QR" },
+      ],
+    };
+
+    return data;
+  } catch (error) {
+    return rejectWithValue("Error loading dashboard data");
+  }
+});

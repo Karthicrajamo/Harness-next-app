@@ -1,0 +1,62 @@
+/* Normal Light */
+.my-gradient {
+  background: linear-gradient(to right, #f9f9fa, #6cb6f1);
+}
+/* .itemList {
+  background: linear-gradient(to right, #f9f9fa, #6cb6f1);
+  transition: background 0.3s ease;
+} */
+
+.my-card-gradient {
+  background: linear-gradient(to right, #f0f7ff, #dbeafe);
+}
+/* Hover Light */
+.itemList:hover {
+  background: linear-gradient(to right, #ffffff, #4da3e6);
+}
+.my-card-gradient {
+  background: linear-gradient(to right, #b2d9f8, #6cb6f1);
+}
+.dark .my-card-gradient {
+ background: linear-gradient(to right, #3d496b, #5f8beb);
+}
+.dark .itemList:hover {
+  background: linear-gradient(to right, #3d496b, #5f8beb);
+}
+/* Normal Dark */
+.dark .my-gradient {
+  background: linear-gradient(to right, #3d496b, #5f8beb);
+}
+
+/* Hover Dark */
+.dark .my-gradient:hover {
+  background: linear-gradient(to right, #2f3a57, #4c78d6);
+}
+
+/* Light Mode Gradient */
+.login-gradient {
+  background: linear-gradient(to bottom right, #2563eb, #3b82f6, #1d4ed8);
+}
+
+/* Light Mode Blur Circles */
+.login-circle-1 {
+  background: rgba(96, 165, 250, 0.3);
+}
+
+.login-circle-2 {
+  background: rgba(147, 197, 253, 0.2);
+}
+
+/* Dark Mode Gradient */
+.dark .login-gradient {
+  background: linear-gradient(to bottom right, #0f172a, #1e293b, #1e3a8a);
+}
+
+/* Dark Mode Circles */
+.dark .login-circle-1 {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.dark .login-circle-2 {
+  background: rgba(30, 58, 138, 0.3);
+}

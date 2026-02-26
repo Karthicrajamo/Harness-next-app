@@ -33,11 +33,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       <div className="flex flex-1">
         <Sidebar collapsed={collapsed} />
-        <main
-          className={`flex-1 p-6 mt-14 transition-all duration-300 ${
-            collapsed ? "ml-50" : null
-          } bg-[#3b83f6]/5`}
-        >
+{collapsed && (
+    <div
+      onClick={() => setCollapsed(false)}
+      className="fixed inset-0 bg-black/40 z-40 md:hidden"
+    />
+  )}
+      <main
+  className={`
+    flex-1 p-4 sm:p-6
+    pt-24 md:pt-14
+    transition-all duration-300
+    bg-[#3b83f6]/5
+    ${collapsed ? "md:ml-50" : "md:ml-0"}
+  `}
+>
           {children}
         </main>
       </div>
