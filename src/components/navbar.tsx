@@ -136,12 +136,7 @@ export default function Navbar({
       onClick: hanldeForget,
     },
     { icon: Bell, label: "Notification", iconClass: "text-[#2196f3]" },
-    {
-      icon: LogOut,
-      label: "Logout",
-      iconClass: "text-red-600",
-      onClick: handleOpenPopup,
-    },
+   
     {
       icon: Settings,
       label: "Settings",
@@ -149,16 +144,16 @@ export default function Navbar({
     },
 
     {
-      icon: UserIcon,
-      label: user?.userName,
-      text: user?.userName.charAt(0)?.toUpperCase(),
-      iconClass: "text-gray-600 dark:text-yellow-400",
-    },
-    {
       icon: darkMode ? Sun : Moon,
       label: darkMode ? "Light Mode" : "Dark Mode",
       onClick: toggleDarkMode,
       iconClass: "text-gray-600 dark:text-yellow-400",
+    },
+     {
+      icon: LogOut,
+      label: "Logout",
+      iconClass: "text-red-600",
+      onClick: handleLogout,
     },
   ];
 

@@ -1,0 +1,29 @@
+.custom__datatable {
+  .p-column-header-content {
+    .column__header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #80889E;
+      font-weight: 400;
+    }
+
+    span[data-pc-section="sort"] {
+      display: none;
+    }
+  }
+
+  .p-datatable-thead tr {
+    border: none;
+    border-radius: 6px;
+
+    th {
+      background-color: #F9FAFB;
+      border: none;
+
+      &.p-highlight {
+        background-color: #eef2ff;
+      }
+    }
+  }
+}
