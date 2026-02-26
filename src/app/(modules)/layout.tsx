@@ -125,8 +125,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             p-4 sm:p-6
             pt-24 md:pt-20
             transition-all duration-300 ease-in-out
-            bg-blue-50
-            ${collapsed ? "md:ml-64" : "md:ml-0"}
+           
+            ${collapsed ? "md:ml-50" : "md:ml-0"}
           `}
         >
           {children}
