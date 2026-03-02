@@ -1,5 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { LOGIN, OPERATION, RESETPASSWORD } from "@/redux/actionTypes";
+import {
+  GETCOMAPANYDETAILS,
+  GETPRIVILEGESDETAILS,
+  LOGIN,
+  OPERATION,
+  RESETPASSWORD,
+} from "@/redux/actionTypes";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { APIROUTES } from "@/lib/apiRoutes";
@@ -11,17 +17,28 @@ import {
 
 interface LoginPayload {
   userId: string;
+  username:string;
   password: string;
   companyId: number | string;
   companyName: string;
   divisionId: number | string | null;
   divisionName: string | null;
+  getDivisonId:any
 }
 
 interface LoginResponse {
   token?: string;
   message?: string;
   [key: string]: any;
+}interface PrivilegesPayload {
+  userId: string;
+  companyId: number;
+  getDivisonId: number | null;
+}
+
+interface PrivilegesResponse {
+  success: boolean;
+  data: any;
 }
 
 export const LoginMiddleWare = createAsyncThunk<
@@ -85,6 +102,72 @@ export const ResetPasswordMiddleWare = createAsyncThunk<
   }
 });
 
+export const getComapnyDetailsMiddleware = createAsyncThunk<
+  LoginResponse,
+  LoginPayload,
+  { rejectValue: string }
+>(GETCOMAPANYDETAILS, async ({ username, password }, { rejectWithValue }) => {
+  try {
+    const payload = {
+      username,
+      password,
+    };
+    const { data }: any = await axios.post(
+      APIROUTES.LOGIN.COMPANYDETAILSDATA,
+      payload,
+    );
+    console.log("company details response:", data);
+
+    return data;
+  } catch (error: any) {
+    console.error("company details Error:", error);
+
+    return rejectWithValue(
+      error?.response?.data?.error?.message || "company details failed",
+    );
+  }
+});
+export const getPrivilegesDetailsMiddleware = createAsyncThunk<
+  PrivilegesResponse,
+  PrivilegesPayload,
+  { rejectValue: string }
+>(
+  "privileges/getPrivilegesDetails",
+  async ({ userId, companyId, getDivisonId }, { rejectWithValue }) => {
+    try {
+      const payload = {
+        userId,
+        companyId,
+        getDivisonId,
+      };
+
+      const { data } = await axios.post(
+        "/api/privileges", // ✅ call your Next.js API route
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // ✅ important to send HTTP-only cookie
+        }
+      );
+
+      console.log("Privileges response:", data);
+
+      if (!data.success) {
+        return rejectWithValue(data.message || "Privileges fetch failed");
+      }
+
+      return data;
+    } catch (error: any) {
+      console.error("Privileges Error:", error);
+
+      return rejectWithValue(
+        error?.response?.data?.message || "Privileges fetch failed"
+      );
+    }
+  }
+);
 export const OperationMasterMiddlware = createAsyncThunk<
   ApiResponse,
   void,

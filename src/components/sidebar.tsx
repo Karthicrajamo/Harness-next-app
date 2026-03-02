@@ -63,7 +63,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
 
   // const handleLinkClick = (path?: string, label?: string) => {
   //   if (path) {
-  //     setOpenSubMenu(null); 
+  //     setOpenSubMenu(null);
   //     router.push(path);
   //   } else if (label) {
   //     setOpenSubMenu(openSubMenu === label ? null : label);
@@ -104,8 +104,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
     <aside
@@ -129,13 +128,13 @@ export default function Sidebar({ collapsed }: SidebarProps) {
             item.path === pathname ||
             item.subMenu?.some((sub) => pathname.startsWith(sub.path || ""));
 
-          const isOpen = openSubMenu === item.label; 
+          const isOpen = openSubMenu === item.label;
 
           return (
-            <li key={item.label} className="relative mx-2 my-2">
+            <li key={item.label} className="relative mx-2 my-2" onMouseEnter={() => item.subMenu && setOpenSubMenu(item.label)}
+  onMouseLeave={() => item.subMenu && setOpenSubMenu(null)}>
               <button
                 onClick={() => handleLinkClick(item.path, item.label)}
-                
                 className={`
   w-full text-left px-3 py-2 rounded-md text-xs
   transition-all cursor-pointer
@@ -176,15 +175,15 @@ export default function Sidebar({ collapsed }: SidebarProps) {
                       const isSubActive = pathname.startsWith(sub.path || "");
 
                       return (
-                        <li key={sub.label}>
+                        <li key={sub.label} >
                           <button
-                           onClick={() => handleLinkClick(sub.path, sub.label)}
+                            onClick={() => handleLinkClick(sub.path, sub.label)}
                             className={`
                               w-full text-left px-3 py-2 rounded-md text-xs
                               transition-all cursor-pointer
                               ${
                                 isSubActive
-                                  ? "bg-blue-200 text-blue-900 font-bold border-l-4 border-[#2196f3]"
+                                  ? "my-gradient text-blue-900 font-bold border-l-4 border-[#2196f3]"
                                   : "text-gray-700 font-semibold hover:bg-blue-100 hover:border-l-4 hover:border-[#2196f3]"
                               }
                             `}

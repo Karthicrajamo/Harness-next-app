@@ -1,23 +1,323 @@
+// "use client";
+
+// import { useState, useEffect, useRef } from "react";
+// import Image from "next/image";
+// import InputText from "../../../components/inputText";
+// import Button from "../../../components/button";
+// import LoginFooterSection from "./LoginFooterSection";
+// // import DropdownCommon from "@/components/dropdownCommon";
+// import DropdownCommon from "@/components/dropdownCommon"
+// import DropDownCommon from "@/components/dropdownCommon";
+
+// export default function LoginForm({
+//   toast,
+//   formik,
+//   router,
+//   companyOptions,
+//   selectedCompanyId,
+//   setSelectedCompanyId,
+//   companies,
+//   handleCompanyLogin,
+// }: any) {
+//   const [showCompanyModal, setShowCompanyModal] = useState(false);
+//   const [department, setDepartment] = useState("");
+//   const modalRef = useRef<HTMLDivElement>(null);
+
+//   /* ================= SHOW MODAL IF MULTIPLE COMPANIES ================= */
+//   useEffect(() => {
+//     if (companies?.length > 1) {
+//       setShowCompanyModal(true);
+//     }
+//   }, [companies]);
+
+//   /* ================= CLICK OUTSIDE CLOSE ================= */
+//   useEffect(() => {
+//     const handleClickOutside = (event: MouseEvent) => {
+//       if (
+//         modalRef.current &&
+//         !modalRef.current.contains(event.target as Node)
+//       ) {
+//         setShowCompanyModal(false);
+//       }
+//     };
+
+//     if (showCompanyModal) {
+//       document.addEventListener("mousedown", handleClickOutside);
+//     }
+
+//     return () =>
+//       document.removeEventListener("mousedown", handleClickOutside);
+//   }, [showCompanyModal]);
+
+//   /* ================= ESC KEY CLOSE ================= */
+//   useEffect(() => {
+//     const handleEsc = (event: KeyboardEvent) => {
+//       if (event.key === "Escape") {
+//         setShowCompanyModal(false);
+//       }
+//     };
+
+//     if (showCompanyModal) {
+//       document.addEventListener("keydown", handleEsc);
+//     }
+
+//     return () => document.removeEventListener("keydown", handleEsc);
+//   }, [showCompanyModal]);
+
+//   return (
+//     <>
+//       {/* ================= LOGIN CARD ================= */}
+//       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-6 h-full">
+//         <div className="w-full max-w-sm">
+//           <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20">
+
+//             {/* Header */}
+//             <div className="hidden lg:block bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-center">
+//               <div className="flex items-center justify-center space-x-3">
+//                 <div className="relative w-12 h-12 bg-white/20 rounded-xl overflow-hidden">
+//                   <Image
+//                     src="/assets/harness.png"
+//                     alt="Harness Logo"
+//                     fill
+//                     className="object-cover p-2"
+//                     sizes="48px"
+//                     priority
+//                   />
+//                 </div>
+//                 <h1 className="text-xl font-bold text-white">
+//                   Harness ERP
+//                 </h1>
+//               </div>
+//             </div>
+
+//             {/* Form */}
+//             <form onSubmit={formik.handleSubmit} className="p-6">
+//               {/* Username */}
+//               <div className="mb-4">
+//                 <label className="block text-xs font-semibold text-gray-700 mb-1">
+//                   Username
+//                 </label>
+//                 <InputText
+//                   name="username"
+//                   value={formik.values.username}
+//                   onChange={formik.handleChange}
+//                   placeholder="Enter username"
+//                   className="w-full p-2.5 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+//                   disabled={formik.isSubmitting}
+//                 />
+//               </div>
+
+//               {/* Password */}
+//               <div className="mb-4">
+//                 <label className="block text-xs font-semibold text-gray-700 mb-1">
+//                   Password
+//                 </label>
+//                 <InputText
+//                   name="password"
+//                   type="password"
+//                   value={formik.values.password}
+//                   onChange={formik.handleChange}
+//                   placeholder="Enter password"
+//                   className="w-full p-2.5 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+//                 />
+//               </div>
+
+//               {/* Reset Password */}
+//               <div className="flex justify-end mb-4">
+//                 <button
+//                   type="button"
+//                   onClick={() => router.push("/forgetPassword")}
+//                   className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+//                 >
+//                   Reset Password?
+//                 </button>
+//               </div>
+
+//               {/* Login Button */}
+//               <Button
+//                 type="submit"
+//                 label={
+//                   formik.isSubmitting ? "Authenticating..." : "Login"
+//                 }
+//                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
+//                 disabled={formik.isSubmitting}
+//               />
+//             </form>
+
+//             <LoginFooterSection />
+//           </div>
+//         </div>
+//       </div>
+
+//       // {/* ================= COMPANY MODAL ================= */}
+//       // {showCompanyModal && (
+//       //   <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+
+//           // <div
+//           //   ref={modalRef}
+//           //   className="relative bg-white w-[90%] sm:w-[420px] rounded-2xl shadow-2xl p-6 animate-fadeIn"
+//           // >
+//       //       {/* Close Button */}
+//       //       <button
+//       //         onClick={() => setShowCompanyModal(false)}
+//       //         className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-lg"
+//       //       >
+//       //         ✕
+//       //       </button>
+
+//       //       <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+//       //         Select Company
+//       //       </h2>
+
+//       //       <DropdownCommon
+//       //         options={companyOptions}
+//       //         value={selectedCompanyId}
+//       //         onChange={(val) => setSelectedCompanyId(val)}
+//       //         placeholder="Choose company"
+//       //         required
+//       //       />
+
+//             // <button
+//             //   onClick={() => {
+//             //     if (!selectedCompanyId) {
+//             //       toast.current?.show({
+//             //         severity: "warn",
+//             //         summary: "Warning",
+//             //         detail: "Please select a company",
+//             //         life: 3000,
+//             //       });
+//             //       return;
+//             //     }
+
+//             //     handleCompanyLogin(selectedCompanyId);
+//             //     setShowCompanyModal(false);
+//             //   }}
+//             //   className="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition"
+//             // >
+//             //   Proceed
+//             // </button>
+//       //     </div>
+//       //   </div>
+//       // )}
+//       {showCompanyModal && (
+
+//         <div  className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+//          <div
+//             ref={modalRef}
+//             className="relative bg-white w-[90%] sm:w-[420px] rounded-2xl shadow-2xl p-6 animate-fadeIn"
+//           >
+//         <DropDownCommon
+//         headerLabel="Select Company"
+//         data={companyOptions}
+//         placeholder="Select Department"
+//         selectedData={selectedCompanyId}
+//         handleChange={(item) => setSelectedCompanyId(item)}
+//         isRequird={true}
+//         errorMessage={!selectedCompanyId ? "Department is required" : ""}
+//       />
+//             <button
+//               onClick={() => {
+//                 if (!selectedCompanyId) {
+//                   toast.current?.show({
+//                     severity: "warn",
+//                     summary: "Warning",
+//                     detail: "Please select a company",
+//                     life: 3000,
+//                   });
+//                   return;
+//                 }
+
+//                 handleCompanyLogin(selectedCompanyId);
+//                 setShowCompanyModal(false);
+//               }}
+//               className="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition"
+//             >
+//               Proceed
+//             </button>
+//       </div>
+
+//     </div>
+//       )}
+//     </>
+//   );
+// }
+
 "use client";
-import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { LoginMiddleWare } from "@/features/Thunks/auth/authThunks";
-import { AppDispatch } from "@/redux/mainStore";
+
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import InputText from "../../../components/inputText";
 import Button from "../../../components/button";
-import Image from "next/image";
 import LoginFooterSection from "./LoginFooterSection";
+import DropDownCommon from "@/components/dropdownCommon";
 
-export default function LoginForm({ toast, formik, router }: any) {
+export default function LoginForm({
+  toast,
+  formik,
+  router,
+  companyOptions,
+  selectedCompanyId,
+  setSelectedCompanyId,
+  companies,
+  handleCompanyLogin,
+  showCompanyModal,
+  setShowCompanyModal,
+  divisionOptions,
+  selectedDivisionId,
+  setSelectedDivisionId,
+}: any) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  /* ================= SHOW MODAL IF MULTIPLE COMPANIES ================= */
+  // useEffect(() => {
+  //   if (companies?.length > 1) {
+  //     setShowCompanyModal(true);
+  //   }
+  // }, [companies]);
+
+  /* ================= CLICK OUTSIDE CLOSE ================= */
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       modalRef.current &&
+  //       !modalRef.current.contains(event.target as Node)
+  //     ) {
+  //       setShowCompanyModal(false);
+  //     }
+  //   };
+
+  //   if (showCompanyModal) {
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //   }
+
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, [showCompanyModal]);
+
+  /* ================= ESC KEY CLOSE ================= */
+  // useEffect(() => {
+  //   const handleEsc = (event: KeyboardEvent) => {
+  //     if (event.key === "Escape") {
+  //       setShowCompanyModal(false);
+  //     }
+  //   };
+
+  //   if (showCompanyModal) {
+  //     document.addEventListener("keydown", handleEsc);
+  //   }
+
+  //   return () => document.removeEventListener("keydown", handleEsc);
+  // }, [showCompanyModal]);
+
   return (
-    <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-6 h-full">
-      <div className="w-full max-w-sm">
-        <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20">
-          <div className="hidden lg:block bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-center relative overflow-hidden">
-            <div className="relative z-10">
-              <div className="flex items-center justify-center space-x-3 mb-2">
-                <div className="relative w-12 h-12 bg-white/20 rounded-xl backdrop-blur-md border border-white/30 overflow-hidden shadow-lg">
+    <>
+      {/* ================= LOGIN CARD ================= */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-6 h-full">
+        <div className="w-full max-w-sm">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20">
+            {/* Header */}
+            <div className="hidden lg:block bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-center">
+              <div className="flex items-center justify-center space-x-3">
+                <div className="relative w-12 h-12 bg-white/20 rounded-xl overflow-hidden">
                   <Image
                     src="/assets/harness.png"
                     alt="Harness Logo"
@@ -30,133 +330,121 @@ export default function LoginForm({ toast, formik, router }: any) {
                 <h1 className="text-xl font-bold text-white">Harness ERP</h1>
               </div>
             </div>
-          </div>
-          <div className="lg:hidden bg-gradient-to-r from-blue-500 to-blue-600 p-4 text-center">
-            <div className="flex items-center justify-center space-x-2 mb-1">
-              <div className="relative w-10 h-10 bg-white/20 rounded-lg backdrop-blur-sm overflow-hidden">
-                <Image
-                  src="/assets/harness.png"
-                  alt="Harness Logo"
-                  fill
-                  className="object-cover p-1.5"
-                  sizes="40px"
-                  priority
+
+            <form onSubmit={formik.handleSubmit} className="p-6">
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Username
+                </label>
+                <InputText
+                  name="username"
+                  value={formik.values.username}
+                  onChange={formik.handleChange}
+                  placeholder="Enter username"
+                  className="w-full p-2.5 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+                  disabled={formik.isSubmitting}
                 />
               </div>
-              <h1 className="text-lg font-bold text-white">Harness ERP</h1>
-            </div>
-            <p className="text-blue-100/90 text-xs">Enterprise Login</p>
-          </div>
-          <form onSubmit={formik.handleSubmit} className="p-6">
-            <div className="mb-4">
-              <label
-                htmlFor="username"
-                className="block text-xs font-semibold text-gray-700 mb-1"
-              >
-                Username
-              </label>
-              <InputText
-                id="username"
-                name="username"
-                value={formik.values.username}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="Enter username"
-                className={`w-full p-2.5 border  transition-all duration-200 focus:outline-none ${
-                  formik.touched.username && formik.errors.username
-                    ? "border-red-400 bg-red-50/50 focus:border-red-500 focus:ring-1 focus:ring-red-500/20"
-                    : formik.touched.username && !formik.errors.username
-                      ? "border-green-400 bg-green-50/30 focus:border-green-500 focus:ring-1 focus:ring-green-500/20"
-                      : "border-gray-200 bg-gray-50/50 hover:bg-gray-50 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
-                }`}
-                disabled={formik.isSubmitting}
-              />
-              {formik.touched.username && formik.errors.username && (
-                <div className="mt-1.5 p-2 bg-red-50/80 border border-red-100 rounded-md flex items-start text-xs">
-                  <i className="pi pi-exclamation-circle text-red-500 mt-0.5 mr-2"></i>
-                  <p className="text-red-600 font-medium">
-                    {formik.errors.username}
-                  </p>
-                </div>
-              )}
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-xs font-semibold text-gray-700 mb-1"
-              >
-                Password
-              </label>
-              <div className="relative">
+
+              {/* Password */}
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Password
+                </label>
                 <InputText
-                  id="password"
                   name="password"
                   type="password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  placeholder="Enter your password"
-                  className={`w-full p-2.5  border transition-all duration-200 focus:outline-none ${
-                    formik.touched.password && formik.errors.password
-                      ? "border-red-400 bg-red-50/50 focus:border-red-500 focus:ring-1 focus:ring-red-500/20"
-                      : formik.touched.password && !formik.errors.password
-                        ? "border-green-400 bg-green-50/30 focus:border-green-500 focus:ring-1 focus:ring-green-500/20"
-                        : "border-gray-200 bg-gray-50/50 hover:bg-gray-50 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
-                  }`}
+                  placeholder="Enter password"
+                  className="w-full p-2.5 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
                 />
               </div>
-              {formik.touched.password && formik.errors.password && (
-                <div className="mt-1.5 p-2 bg-red-50/80 border border-red-100 rounded-md flex items-start text-xs">
-                  <i className="pi pi-exclamation-circle text-red-500 mt-0.5 mr-2"></i>
-                  <p className="text-red-600 font-medium">
-                    {formik.errors.password}
-                  </p>
-                </div>
-              )}
-            </div>
-            <div className="flex justify-end mb-4">
-              <button
-                type="button"
-                onClick={() => router.push("/forgetPassword")}
-                className="text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
-              >
-                Reset Password?
-              </button>
-            </div>
-            <Button
-              type="submit"
-              label={formik.isSubmitting ? "Authenticating..." : "Login"}
-              icon={
-                formik.isSubmitting
-                  ? "pi pi-spin pi-spinner"
-                  : "pi pi-arrow-right"
-              }
-              iconPos="right"
-              className="w-full bg-gradient-to-r from-[#2196f3] to-[#2196f3] hover:from-[#2196f3] hover:to-blue-800 border-0 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
-              disabled={formik.isSubmitting}
-            />
-          </form>
-          <LoginFooterSection />
+
+              {/* Reset Password */}
+              <div className="flex justify-end mb-4">
+                <button
+                  type="button"
+                  onClick={() => router.push("/forgetPassword")}
+                  className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Reset Password?
+                </button>
+              </div>
+
+              {/* Login Button */}
+              <Button
+                type="submit"
+                label={formik.isSubmitting ? "Authenticating..." : "Login"}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg"
+                disabled={formik.isSubmitting}
+              />
+            </form>
+
+            <LoginFooterSection />
+          </div>
         </div>
       </div>
-    </div>
+
+      {showCompanyModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="relative bg-white w-[90%] sm:w-[420px] rounded-2xl shadow-2xl p-6 overflow-visible">
+          <div className="flex items-center justify-between mb-5">
+        <h2 className="text-lg font-semibold text-gray-800">
+          Select Company
+        </h2>
+
+        <button
+          onClick={() => setShowCompanyModal(false)}
+          className="text-gray-400 hover:text-gray-600 transition text-lg font-semibold"
+        >
+          ✕
+        </button>
+      </div>
+            <div className="mb-2">
+            <DropDownCommon
+              headerLabel="Company"
+              data={companyOptions}
+              placeholder="Choose Company"
+              selectedData={selectedCompanyId}
+              handleChange={(item) => setSelectedCompanyId(item)}
+              isRequird={true}
+              errorMessage={!selectedCompanyId ? "Company is required" : ""}
+            />
+            </div>
+            {divisionOptions?.length > 0 && (
+              <DropDownCommon
+                headerLabel="Division"
+                data={divisionOptions}
+                placeholder="Choose Division"
+                selectedData={selectedDivisionId}
+                handleChange={(item) => setSelectedDivisionId(item)}
+                isRequird={true}
+                errorMessage={!selectedDivisionId ? "Division is required" : ""}
+              />
+            )}
+            <button
+              onClick={() => {
+                if (!selectedCompanyId) {
+                  toast.current?.show({
+                    severity: "warn",
+                    summary: "Warning",
+                    detail: "Please select a company",
+                    life: 3000,
+                  });
+                  return;
+                }
+
+                handleCompanyLogin(selectedCompanyId);
+                setShowCompanyModal(false);
+              }}
+              className="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition"
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
-
-// <p className="text-blue-100/90 text-xs">Secure Login Portal</p>
-//  <div className="mt-6 pt-4 border-t border-gray-100">
-//               <div className="grid grid-cols-3 gap-2">
-//                 <div className="text-center p-2 rounded-md bg-gradient-to-br from-blue-50 to-blue-50/50 border border-blue-100">
-//                   <i className="pi pi-shield text-blue-500 text-sm block"></i>
-//                   <span className="text-xs text-gray-700">Secure</span>
-//                 </div>
-//                 <div className="text-center p-2 rounded-md bg-gradient-to-br from-green-50 to-green-50/50 border border-green-100">
-//                   <i className="pi pi-bolt text-green-500 text-sm block"></i>
-//                   <span className="text-xs text-gray-700">Fast</span>
-//                 </div>
-//                 <div className="text-center p-2 rounded-md bg-gradient-to-br from-purple-50 to-purple-50/50 border border-purple-100">
-//                   <i className="pi pi-globe text-purple-500 text-sm block"></i>
-//                   <span className="text-xs text-gray-700">ERP</span>
-//                 </div>
-//               </div>
-//             </div>

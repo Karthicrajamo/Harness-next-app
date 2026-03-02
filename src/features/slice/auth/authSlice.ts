@@ -64,6 +64,8 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  getComapnyDetailsMiddleware,
+  getPrivilegesDetailsMiddleware,
   LoginMiddleWare,
   OperationMasterMiddlware,
   ResetPasswordMiddleWare,
@@ -72,7 +74,8 @@ import {
 interface AuthState {
   token: string | null;
   user: any | null;
-  operationData: any | null;
+  companyDetailsData: any | null;
+  privilegesDetailsData:any|null;
   loading: boolean;
   error: string | null;
 }
@@ -80,7 +83,8 @@ interface AuthState {
 const initialState: AuthState = {
   token: null,
   user: null,
-  operationData: null,
+  companyDetailsData: null,
+  privilegesDetailsData:null,
   loading: false,
   error: null,
 };
@@ -121,17 +125,28 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Reset Password failed";
       })
-      .addCase(OperationMasterMiddlware.pending, (state) => {
+      .addCase(getComapnyDetailsMiddleware.pending, (state) => {
         state.loading = true;
       })
-      .addCase(OperationMasterMiddlware.fulfilled, (state, action) => {
+      .addCase(getComapnyDetailsMiddleware.fulfilled, (state, action) => {
         state.loading = false;
-        state.operationData = action.payload;
+        state.companyDetailsData = action.payload;
       })
-      .addCase(OperationMasterMiddlware.rejected, (state, action) => {
+      .addCase(getComapnyDetailsMiddleware.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Reset Password failed";
-      });
+      })
+      .addCase(getPrivilegesDetailsMiddleware.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPrivilegesDetailsMiddleware.fulfilled, (state, action) => {
+        state.loading = false;
+        state.privilegesDetailsData = action.payload;
+      })
+      .addCase(getPrivilegesDetailsMiddleware.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Reset Password failed";
+      })
   },
 });
 
