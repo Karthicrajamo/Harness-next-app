@@ -68,7 +68,7 @@ const OperationListPage: React.FC = () => {
   return (
     <DashboardLayout>
       <div className="bg-blue-50 min-h-screen">
-        <Header title="Employee Details" headerText="Employee Details" onCreateClick={openAddModal} addButtonText={"Employee"} />
+        <Header title="Employee QR Generation" headerText="Employee  QR Generation" showCreateButton={false}/>
 
         <div className="p-4">
           <OperationTable

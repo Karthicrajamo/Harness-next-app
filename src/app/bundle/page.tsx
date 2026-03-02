@@ -89,6 +89,11 @@ const OperationListPage: React.FC = () => {
             onViewClick={openViewModal} // NEW: Handle view icon
             onDeleteClick={handleDelete} // NEW: Handle single & multi delete
             headers={headers}
+            pdfName="Bundle_Details"
+            QRPayload={JSON.stringify({
+            employeeNo: "employeeNo",
+            
+          })}
           />
         </div>
       </div>

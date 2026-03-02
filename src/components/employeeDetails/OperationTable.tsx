@@ -13,8 +13,8 @@ import {
 import { QRCodeCanvas } from "qrcode.react";
 import { FiX, FiGrid } from "react-icons/fi";
 import { FiDownload } from "react-icons/fi";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { QrPdf } from "./QrPdf";
+import {                          ```````` } from "@react-pdf/renderer";
+import { EmployeeQrPdf } from "./QrPdf";
 import QRCode from "qrcode";
 import { EmployeeItem } from "@/data/employee";
 
@@ -31,22 +31,6 @@ function useDebounce<T>(value: T, delay: number): T {
 
   return debouncedValue;
 }
-
-/* =========================================================
-   Types
-========================================================= */
-// export interface EmployeeItem {
-//   id: string;
-//   operationCode: string;
-//   operation: string;
-//   hindi: string;
-//   tamil: string;
-//   smv: number;
-//   machineCode: string;
-//   masterOperation: string;
-//   skillGrade: string;
-//   comments: string;
-// }
 
 type SortOrder = "asc" | "desc";
 
@@ -70,7 +54,7 @@ const MOCK_DATA: EmployeeItem[] = [
     group1: "Sewing",
     state: "",
     lastUpdated: "04-JUL",
-    profilePercent: 84,
+    status: "Active",
   },
   {
     id: "2",
@@ -88,7 +72,7 @@ const MOCK_DATA: EmployeeItem[] = [
     group1: "",
     state: "",
     lastUpdated: "10-MAR",
-    profilePercent: 19,
+    status: "Inactive",
   },
 ];
 
@@ -108,47 +92,28 @@ const OperationTableToolbar = ({
   selectedCount: number;
   onBulkDelete: () => void;
   setShowQR: (v: boolean) => void;
-  qrImages: { id: string; label: string; src: string }[];
+  qrImages: { id: string;
+      employeeNo: string;
+      employeeName: string;
+      department: string;
+      designation: string;
+      src: string; }[];
 }) => (
-  <div className="flex justify-between items-center p-3 border-b border-gray-200">
-    <div className="relative">
-      <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
-        placeholder="Search all fields"
-        className="pl-8 py-1.5 border border-blue-400 rounded-md text-sm w-72 focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
-
+  <>
     {selectedCount > 0 && (
-      <div className="flex items-center space-x-2">
-        <button
-          onClick={onBulkDelete}
-          className="flex items-center space-x-1 px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 rounded-md text-xs"
-        >
-          <FiTrash2 />
-          <span>Delete ({selectedCount})</span>
-        </button>
-
-        <button
-          onClick={() => setShowQR(true)}
-          className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-md text-xs"
-        >
-          <FiGrid />
-          <span>QR ({selectedCount})</span>
-        </button>
-        {/* <button
-          onClick={() => setShowQR(true)}
-          className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded text-xs"
-        >
-          <FiDownload />
-          <span>Download PDF</span>
-        </button> */}
+      <div className="flex justify-between items-center p-3 border-b border-gray-200">
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setShowQR(true)}
+            className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-md text-xs"
+          >
+            <FiGrid />
+            <span>QR ({selectedCount})</span>
+          </button>
+        </div>
       </div>
     )}
-  </div>
+  </>
 );
 
 /* =========================================================
@@ -173,11 +138,17 @@ const OperationTable = ({
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const qrRef = React.useRef<HTMLDivElement>(null);
   const [qrImages, setQrImages] = useState<
-    { id: string; label: string; src: string }[]
+    {
+      id: string;
+      employeeNo: string;
+      employeeName: string;
+      department: string;
+      designation: string;
+      src: string;
+    }[]
   >([]);
   const pdfRef = React.useRef<HTMLAnchorElement>(null);
 
-  /** 🔹 NEW: column search state */
   const [columnFilters, setColumnFilters] = useState<
     Partial<Record<keyof EmployeeItem, string>>
   >({});
@@ -186,7 +157,6 @@ const OperationTable = ({
 
   const dataFiltered = useMemo(() => {
     return initialData.filter((item) => {
-      // Global search
       const globalMatch =
         !debouncedSearchTerm ||
         Object.values(item).some((val) =>
@@ -195,7 +165,6 @@ const OperationTable = ({
 
       if (!globalMatch) return false;
 
-      // Column-wise AND filter
       return Object.entries(columnFilters).every(([key, value]) => {
         if (!value) return true;
         const cell = item[key as keyof EmployeeItem];
@@ -204,9 +173,6 @@ const OperationTable = ({
     });
   }, [initialData, debouncedSearchTerm, columnFilters]);
 
-  /* =========================================================
-     Sorting
-  ========================================================= */
   const dataSorted = useMemo(() => {
     const sorted = [...dataFiltered];
     sorted.sort((a, b) => {
@@ -224,6 +190,28 @@ const OperationTable = ({
     return sorted;
   }, [dataFiltered, sortBy, sortOrder]);
 
+  // --- SELECT ALL LOGIC ---
+  const isAllSelected = dataSorted.length > 0 && dataSorted.every(item => selectedIds.has(item.id));
+  const isSomeSelected = dataSorted.some(item => selectedIds.has(item.id)) && !isAllSelected;
+
+  const handleSelectAll = () => {
+    if (isAllSelected) {
+      // Unselect all in current filtered view
+      setSelectedIds(prev => {
+        const next = new Set(prev);
+        dataSorted.forEach(item => next.delete(item.id));
+        return next;
+      });
+    } else {
+      // Select all in current filtered view
+      setSelectedIds(prev => {
+        const next = new Set(prev);
+        dataSorted.forEach(item => next.add(item.id));
+        return next;
+      });
+    }
+  };
+
   const toggleSort = (key: keyof EmployeeItem) => {
     if (key === sortBy) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -237,7 +225,7 @@ const OperationTable = ({
     return dataSorted.filter((row) => selectedIds.has(row.id));
   }, [dataSorted, selectedIds]);
 
-  const fileName = `QR_${selectedRows.length}_Operations_${new Date()
+  const fileName = `QR_${selectedRows.length}_EMPLOYEE_${new Date()
     .toISOString()
     .slice(0, 10)}.pdf`;
 
@@ -247,20 +235,19 @@ const OperationTable = ({
     (async () => {
       const images = await Promise.all(
         selectedRows.map(async (row) => {
-          const payload =
-            // JSON.stringify({
-            // id: row.id,
-            // employeeNo:
-            row.employeeNo;
-          // dateOfBirth: row.dateOfBirth,
-          // gender: row.gender,
-          // unit: row.unit,
-          // department: row.department,
-          // });
+          const payload = JSON.stringify({
+            employeeNo: row.employeeNo,
+            // employeeName: row.employeeName,
+            // department: row.department,
+            // designation: row.designation,
+          });
 
           return {
             id: row.id,
-            label: row.employeeNo,
+            employeeNo: row.employeeNo,
+            employeeName: row.employeeName,
+            department: row.department,
+            designation: row.designation,
             src: await QRCode.toDataURL(payload, {
               width: 300,
               margin: 1,
@@ -268,18 +255,15 @@ const OperationTable = ({
           };
         }),
       );
-
       setQrImages(images);
     })();
   }, [showQR, selectedRows]);
 
   useEffect(() => {
     if (qrImages.length === 0) return;
-
     const timer = setTimeout(() => {
       pdfRef.current?.click();
-    }, 500); // give react-pdf time to render
-
+    }, 500);
     return () => clearTimeout(timer);
   }, [qrImages]);
 
@@ -290,28 +274,23 @@ const OperationTable = ({
     "dateOfBirth",
     "gender",
     "unit",
+    "category",
     "department",
     "designation",
-    "category",
     "type",
-    "grade",
-    "tier",
+    // "grade",
+    // "tier",
     "group1",
-    "state",
-    "lastUpdated",
-    "profilePercent",
-    // "actions",
+    "group2",
+    "group3",
+    "group4",
+    // "state",
+    "status",
+    // "lastUpdated",
   ];
 
   const formatHeader = (key: string) => {
-    return (
-      key
-        // handle camelCase & PascalCase
-        .replace(/([a-z])([A-Z])/g, "$1 $2")
-        // handle snake_case
-        .replace(/_/g, " ")
-        .toUpperCase()
-    );
+    return key.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/_/g, " ").toUpperCase();
   };
 
   return (
@@ -328,7 +307,6 @@ const OperationTable = ({
       <div className="max-h-[70vh] overflow-y-auto border border-gray-200">
         <table className="min-w-full border-collapse text-xs">
           <thead className="bg-gray-50">
-            {/* HEADER ROW */}
             <tr>
               {headers.map((key) => (
                 <th
@@ -339,19 +317,33 @@ const OperationTable = ({
                   className="px-3 py-2 text-left font-bold text-gray-500 uppercase cursor-pointer"
                 >
                   <div className="flex items-center">
-                    {formatHeader(key)}
-                    {sortBy === key &&
-                      (sortOrder === "asc" ? (
-                        <FiArrowUp className="ml-1 w-3 h-3 text-[#3b82f6]" />
-                      ) : (
-                        <FiArrowDown className="ml-1 w-3 h-3 text-[#3b82f6]" />
-                      ))}
+                    {key === "select" ? (
+                      <input 
+                        type="checkbox" 
+                        className="cursor-pointer"
+                        checked={isAllSelected}
+                        ref={input => {
+                            if (input) input.indeterminate = isSomeSelected;
+                        }}
+                        onChange={handleSelectAll}
+                        onClick={(e) => e.stopPropagation()} // Prevent sort trigger
+                      />
+                    ) : (
+                      <>
+                        {formatHeader(key)}
+                        {sortBy === key &&
+                          (sortOrder === "asc" ? (
+                            <FiArrowUp className="ml-1 w-3 h-3 text-[#3b82f6]" />
+                          ) : (
+                            <FiArrowDown className="ml-1 w-3 h-3 text-[#3b82f6]" />
+                          ))}
+                      </>
+                    )}
                   </div>
                 </th>
               ))}
             </tr>
 
-            {/* 🔍 COLUMN SEARCH ROW (NEW, UI MATCHED) */}
             <tr className="bg-white">
               {headers.map((key) =>
                 key === "actions" || key === "select" ? (
@@ -375,177 +367,147 @@ const OperationTable = ({
             </tr>
           </thead>
 
-          <tbody className="bg-white divide-y divide-gray-200 ">
-            {dataSorted.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50 text-black">
-                {headers.map((key) => {
-                  if (key === "select") {
-                    return (
-                      <td key={key} className="px-3 py-2">
-                        <input
-                          type="checkbox"
-                          checked={selectedIds.has(item.id)}
-                          onChange={() =>
-                            setSelectedIds((prev) => {
-                              const next = new Set(prev);
-                              next.has(item.id)
-                                ? next.delete(item.id)
-                                : next.add(item.id);
-                              return next;
-                            })
-                          }
-                        />
-                      </td>
-                    );
-                  }
+          <tbody className="bg-white divide-y divide-gray-200">
+  {dataSorted.map((item, index) => (
+    <tr 
+      key={item.id} 
+      className={`hover:bg-blue-50 text-black transition-colors ${
+        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+      }`}
+    >
+      {headers.map((key) => {
+        if (key === "select") {
+          return (
+            <td key={key} className="px-3 py-2">
+              <input
+                type="checkbox"
+                checked={selectedIds.has(item.id)}
+                onChange={() =>
+                  setSelectedIds((prev) => {
+                    const next = new Set(prev);
+                    next.has(item.id)
+                      ? next.delete(item.id)
+                      : next.add(item.id);
+                    return next;
+                  })
+                }
+              />
+            </td>
+          );
+        }
 
-                  if (key === "actions") {
-                    return (
-                      <td key={key} className="px-3 py-2">
-                        {/* <td
-                        key={key}
-                        className={`px-3 py-2 text-xs  ${responsiveClass} ${cellClass}`}
-                      > */}
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => onViewClick(item)}
-                            className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-200 transition"
-                            title="View Details"
-                          >
-                            <FiEye className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => onEditClick(item)}
-                            className="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100 transition"
-                            title="Edit Operation"
-                          >
-                            <FiEdit2 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => onDeleteClick([item.id])}
-                            className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition"
-                            title="Delete Operation"
-                          >
-                            <FiTrash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        {/* </td> */}
-                      </td>
-                    );
-                  }
+        if (key === "actions") {
+          return (
+            <td key={key} className="px-3 py-2">
+              <div className="flex items-center space-x-2">
+                <button onClick={() => onViewClick(item)} className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-200 transition"><FiEye className="w-4 h-4" /></button>
+                <button onClick={() => onEditClick(item)} className="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100 transition"><FiEdit2 className="w-4 h-4" /></button>
+                <button onClick={() => onDeleteClick([item.id])} className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition"><FiTrash2 className="w-4 h-4" /></button>
+              </div>
+            </td>
+          );
+        }
 
-                  return (
-                    <td key={key} className="px-3 py-2">
-                      {
-                        // key === "smv" ? item.smv.toFixed(2) :
-                        item[key]
-                      }
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
+        return (
+          <td key={key} className="px-3 py-2">
+            {item[key]}
+          </td>
+        );
+      })}
+    </tr>
+  ))}
+</tbody>
         </table>
       </div>
 
       {dataSorted.length === 0 && (
-        <div className="p-4 text-center text-gray-500 text-xs">
-          No operations found
-        </div>
+        <div className="p-4 text-center text-gray-500 text-xs">No operations found</div>
       )}
+      
+      {/* ... QR Modal and Hidden PDF Link remains same ... */}
       {showQR && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-[900px] max-h-[80vh] rounded-lg shadow-lg overflow-hidden">
-            {/* Header */}
-            <div className="flex justify-between items-center p-3 border-b">
-              <h2 className="text-sm font-semibold">
-                QR Codes ({selectedRows.length})
-              </h2>
+  <div className="bg-white w-[950px] max-h-[90vh] rounded-lg shadow-lg overflow-hidden flex flex-col">
+    {/* Header */}
+    <div className="flex justify-between items-center p-3 border-b bg-white">
+      <h2 className="text-sm font-semibold text-gray-800">
+        Jay Jay Mills (Bangladesh) Private Limited - QR Codes ({selectedRows.length})
+      </h2>
+      <div className="flex items-center space-x-2">
+        <PDFDownloadLink
+          document={<EmployeeQrPdf employees={qrImages} />}
+          fileName="operation-qrcodes.pdf"
+        >
+          {({ loading }) => (
+            <button className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded text-xs hover:bg-blue-100 transition">
+              <FiDownload />
+              <span>{loading ? "Generating..." : "Download PDF"}</span>
+            </button>
+          )}
+        </PDFDownloadLink>
+        <button
+          onClick={() => setShowQR(false)}
+          className="p-1 rounded hover:bg-gray-100 text-gray-500"
+        >
+          <FiX className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
 
-              <div className="flex items-center space-x-2">
-                {/* <button
-                //   onClick={downloadQRPDF}
-                  className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded text-xs"
-                >
-                  <span>Download PDF</span>
-                </button> */}
-                <PDFDownloadLink
-                  document={<QrPdf qrImages={qrImages} />}
-                  fileName="operation-qrcodes.pdf"
-                >
-                  {({ loading }) => (
-                    <button
-                      onClick={() => setShowQR(true)}
-                      className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded text-xs"
-                    >
-                      <FiDownload />
-                      {loading ? "Generating..." : "Download PDF"}
-                    </button>
-                  )}
-                </PDFDownloadLink>
-                <button
-                  onClick={() => setShowQR(false)}
-                  className="p-1 rounded hover:bg-gray-100"
-                >
-                  <FiX />
-                </button>
+    {/* QR Grid - Updated to match the "Left Text | Right QR" design */}
+    <div
+      ref={qrRef}
+      className="pdf-safe p-4 grid grid-cols-3 gap-3 bg-white overflow-y-auto"
+    >
+      {selectedRows.map((row) => {
+        const qrImg = qrImages.find((q) => q.id === row.id)?.src;
+        return (
+          <div
+            key={row.id}
+            className="border border-gray-300 rounded p-2 flex flex-row items-center justify-between bg-white"
+          >
+            {/* LEFT SIDE: Employee Details */}
+            <div className="flex-1 pr-2 text-[10px] space-y-1">
+              <div className="truncate">
+                <span className="font-bold">Card No: </span>
+                {row.employeeNo}
+              </div>
+              <div className="truncate">
+                <span className="font-bold">Emp Name: </span>
+                {row.employeeName}
+              </div>
+              <div className="truncate">
+                <span className="font-bold">Dept: </span>
+                {row.department}
+              </div>
+              <div className="truncate">
+                <span className="font-bold">Designation: </span>
+                {row.designation}
               </div>
             </div>
 
-            {/* QR Grid */}
-            <div
-              ref={qrRef}
-              className="pdf-safe p-4 grid grid-cols-4 gap-4 bg-white"
-            >
-              {selectedRows.map((row) => {
-                const qrPayload = JSON.stringify({
-                  id: row.id,
-                  employeeNo: row.employeeNo,
-                  dateOfBirth: row.dateOfBirth,
-                  gender: row.gender,
-                  unit: row.unit,
-                  department: row.department,
-                });
-
-                return (
-                  <div
-                    key={row.id}
-                    className="border rounded p-2 flex flex-col items-center text-xs"
-                  >
-                    {/* <QRCodeCanvas value={qrPayload} size={120} /> */}
-                    <img
-                      src={qrImages.find((q) => q.id === row.id)?.src}
-                      width={120}
-                      height={120}
-                    />
-
-                    <div className="mt-2 text-center font-medium">
-                      {row.employeeNo}
-                    </div>
-
-                    <div className="text-gray-500 text-[10px]">
-                      {row.employeeName}
-                    </div>
-                  </div>
-                );
-              })}
+            {/* RIGHT SIDE: QR Code */}
+            <div className="flex-shrink-0">
+              {qrImg ? (
+                <img
+                  src={qrImg}
+                  alt="QR"
+                  className="w-16 h-16 object-contain border border-gray-100"
+                />
+              ) : (
+                <div className="w-16 h-16 bg-gray-100 animate-pulse" />
+              )}
             </div>
           </div>
-        </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
       )}
-      <PDFDownloadLink
-        document={<QrPdf qrImages={qrImages} />}
-        fileName={fileName}
-      >
-        {({ url, loading }) => (
-          <a
-            ref={pdfRef}
-            href={url || "#"}
-            download={fileName}
-            style={{ display: "none" }}
-          />
-        )}
+
+      <PDFDownloadLink document={<EmployeeQrPdf employees={qrImages} />} fileName={fileName}>
+        {({ url }) => <a ref={pdfRef} href={url || "#"} download={fileName} style={{ display: "none" }} />}
       </PDFDownloadLink>
     </div>
   );

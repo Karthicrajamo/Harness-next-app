@@ -14,5 +14,5 @@ export interface EmployeeItem {
   group1: string; // Sewing, Account, etc
   state: string;
   lastUpdated: string;
-  profilePercent: number | null; // 0–100
+  status: string ; // 0–100
 }
