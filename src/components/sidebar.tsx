@@ -164,6 +164,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
                     ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}
                     z-50
                   `}
+                  
                 >
                   <div className="px-4 py-3">
                     <p className="text-xs font-semibold text-[#2196f3]">
