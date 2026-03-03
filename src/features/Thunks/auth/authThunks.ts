@@ -132,7 +132,7 @@ export const getPrivilegesDetailsMiddleware = createAsyncThunk<
   PrivilegesPayload,
   { rejectValue: string }
 >(
-  "privileges/getPrivilegesDetails",
+  GETPRIVILEGESDETAILS,
   async ({ userId, companyId, getDivisonId }, { rejectWithValue }) => {
     try {
       const payload = {
@@ -142,28 +142,20 @@ export const getPrivilegesDetailsMiddleware = createAsyncThunk<
       };
 
       const { data } = await axios.post(
-        "/api/privileges", // ✅ call your Next.js API route
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // ✅ important to send HTTP-only cookie
-        }
+        APIROUTES.LOGIN.PRIVILEGESDETAILSDATA,
+        payload
       );
 
       console.log("Privileges response:", data);
-
-      if (!data.success) {
-        return rejectWithValue(data.message || "Privileges fetch failed");
-      }
 
       return data;
     } catch (error: any) {
       console.error("Privileges Error:", error);
 
       return rejectWithValue(
-        error?.response?.data?.message || "Privileges fetch failed"
+        error?.response?.data?.error?.message ||
+          error?.response?.data?.message ||
+          "Privileges fetch failed"
       );
     }
   }

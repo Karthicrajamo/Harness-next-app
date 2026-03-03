@@ -125,7 +125,6 @@ const handleCompanyLogin = async () => {
     ).unwrap();
 
     if (loginResponse?.success) {
-      // 🔥 Now call privileges
       await dispatch(
         getPrivilegesDetailsMiddleware({
           userId: formik.values.username,

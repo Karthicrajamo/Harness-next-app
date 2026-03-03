@@ -1,40 +1,38 @@
-// app/api/login/route.ts
 import { NextResponse } from "next/server";
 import { postRequest } from "@/lib/commonService";
 
 export async function POST(req: Request) {
   try {
+
     const body = await req.json();
+    console.log("Login request body:", body);
 
     const backendResponse = await postRequest(`/v2/login`, body, {
       headers: { "Content-Type": "application/json" },
     });
 
-    // Extract token
     const authToken =
-      backendResponse?.data?.token ||
-      backendResponse?.headers?.authorization;
+      backendResponse.headers["authorization"] ||
+      backendResponse.data?.token; 
 
     if (!authToken) {
       return NextResponse.json(
-        { success: false, message: "Token not received from backend" },
+        {
+          success: false,
+          message: "Missing Authorization token in response",
+        },
         { status: 401 }
       );
     }
 
-    // Remove "Bearer " if present
-    const cleanToken = authToken.startsWith("Bearer ")
-      ? authToken.replace("Bearer ", "")
-      : authToken;
 
-    const response = NextResponse.json({
+    const res = NextResponse.json({
       success: true,
       message: "Login successful",
-      user: backendResponse?.data || null,
+      user: backendResponse.data || null,
     });
 
-    // Set HTTP-only cookie
-    response.cookies.set("token", cleanToken, {
+    res.cookies.set("token", authToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -42,14 +40,16 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24, // 1 day
     });
 
-    return response;
+    return res;
   } catch (error: any) {
-    console.error("Login error:", error);
+    console.error("Login API error:", error?.response?.data || error.message);
+
     return NextResponse.json(
       {
         success: false,
         message:
           error?.response?.data?.message || "Internal Server Error during login",
+        details: error?.response?.data || null,
       },
       { status: error?.response?.status || 500 }
     );

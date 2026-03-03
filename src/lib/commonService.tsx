@@ -6,14 +6,24 @@ export const getRequest = async (url, params) => {
   return res;
 };
 
-export const postRequest = async (url, payload, params) => {
-  console.log("first");
-  const res = await api.post(url, payload, {
-    params,
-  });
-  console.log(res, "=======>");
+
+export const postRequest = async (
+  url: string,
+  payload: any,
+  config = {}
+) => {
+  const res = await api.post(url, payload, config);
   return res;
 };
+
+// export const postRequest = async (url, payload, params) => {
+//   console.log("first");
+//   const res = await api.post(url, payload, {
+//     params,
+//   });
+//   console.log(res, "=======>");
+//   return res;
+// };
 
 export const putRequest = async (url, payload, params) => {
   const res = await api.put(url, payload, { params });
